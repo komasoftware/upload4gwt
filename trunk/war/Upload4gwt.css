@@ -1,34 +1,48 @@
-/** Add css rules here for your application. */
-
-
-/** Example rules used by the template application (remove for your app) */
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+div.style input {
+	background: url('input_boxes.gif') no-repeat 0 -58px;
+	border: none;
+	width: 241px;
+	height: 20px;
+	padding-left: 3px;
+	padding-top: 3px;
 }
-
-.sendButton {
-  display: block;
-  font-size: 16pt;
+ 
+div.style input:focus {
+	background-color: transparent;
 }
-
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-  width: 400px;
+ 
+div.style div.fileinputs {
+	position: relative;
+	height: 30px;
+	width: 300px;
 }
-
-.dialogVPanel {
-  margin: 5px;
+ 
+div.style input.file {
+	width: 300px;
+	margin: 0;
 }
-
-.serverResponseLabelError {
-  color: red;
+ 
+div.style input.file.hidden {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
 }
-
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
+ 
+div.style div.fakefile {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 350px;
+	padding: 0;
+	margin: 0;
+	z-index: 1;
+	line-height: 90%;
+}
+ 
+div.style div.fakefile input {
+	margin-bottom: 5px;
+	margin-left: 0;
 }

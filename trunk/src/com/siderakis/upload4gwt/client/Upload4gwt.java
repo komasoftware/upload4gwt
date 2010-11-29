@@ -8,7 +8,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
@@ -32,6 +34,27 @@ public class Upload4gwt implements EntryPoint {
 	private static final String SERVER_ERROR = "An error occurred while "
 		+ "attempting to contact the server. Please check your network "
 		+ "connection and try again.";
+
+	public static native void coolify() /*-{
+		var fakeFileUpload = $doc.createElement('div');
+		fakeFileUpload.className = 'fakefile';
+		fakeFileUpload.appendChild($doc.createElement('input'));
+		var image = $doc.createElement('img');
+		image.src='button_select.gif';
+		fakeFileUpload.appendChild(image);
+		var x = $doc.getElementsByTagName('input');
+		for (var i=0;i<x.length;i++) {
+		if (x[i].type != 'file') continue;
+		if (x[i].parentNode.className != 'fileinputs') continue;
+		x[i].className = 'file hidden';
+		var clone = fakeFileUpload.cloneNode(true);
+		x[i].parentNode.appendChild(clone);
+		x[i].relatedElement = clone.getElementsByTagName('input')[0];
+		x[i].onchange = x[i].onmouseout = function () {
+		this.relatedElement.value = this.value;
+		}
+		}
+	}-*/;
 
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting
@@ -68,7 +91,34 @@ public class Upload4gwt implements EntryPoint {
 		lb.addItem("bar", "barValue");
 		lb.addItem("baz", "bazValue");
 		panel.add(lb);
+		{
+			panel.add(new Label("Single File:"));
+			final FileUpload upload = new FileUpload();
+			upload.setName("singpleUploadFormElement");
+			panel.add(upload);
 
+		}
+		panel.add(lb);
+		{
+
+			final FlowPanel outer = new FlowPanel();
+			outer.setStyleName("style");
+			final FlowPanel flowPanel = new FlowPanel();
+			flowPanel.setStyleName("fileinputs");
+			final FileUpload upload = new FileUpload();
+			upload.setStyleName("file");
+			upload.setName("styledUploadFormElement");
+			flowPanel.add(upload);
+
+			// final FlowPanel name = new FlowPanel();
+			// name.setStyleName("fakefile");
+			// flowPanel.add(name);
+			// final Label hi = new Label("hi");
+			// upload.getElement().insertFirst(hi.getElement());
+			panel.add(new Label("Styled File Input:"));
+			outer.add(flowPanel);
+			panel.add(outer);
+		}
 		//
 		final FileInput fileInput = new FileInput();
 		fileInput.setAllowMultipleFiles(true);
@@ -129,5 +179,6 @@ public class Upload4gwt implements EntryPoint {
 		});
 
 		RootPanel.get().add(form);
+		coolify();
 	}
 }
