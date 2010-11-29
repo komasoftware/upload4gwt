@@ -40,7 +40,7 @@ public class Upload4gwt implements EntryPoint {
 		fakeFileUpload.className = 'fakefile';
 		fakeFileUpload.appendChild($doc.createElement('input'));
 		var image = $doc.createElement('img');
-		image.src='button_select.gif';
+		image.src='../button_select.gif';
 		fakeFileUpload.appendChild(image);
 		var x = $doc.getElementsByTagName('input');
 		for (var i=0;i<x.length;i++) {
