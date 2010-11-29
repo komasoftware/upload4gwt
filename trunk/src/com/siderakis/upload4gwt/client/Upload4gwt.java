@@ -2,6 +2,7 @@ package com.siderakis.upload4gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -35,7 +36,7 @@ public class Upload4gwt implements EntryPoint {
 		+ "attempting to contact the server. Please check your network "
 		+ "connection and try again.";
 
-	public static native void coolify() /*-{
+	public static native void styleAllInputs() /*-{
 		var fakeFileUpload = $doc.createElement('div');
 		fakeFileUpload.className = 'fakefile';
 		fakeFileUpload.appendChild($doc.createElement('input'));
@@ -53,6 +54,22 @@ public class Upload4gwt implements EntryPoint {
 		x[i].onchange = x[i].onmouseout = function () {
 		this.relatedElement.value = this.value;
 		}
+		}
+	}-*/;
+
+	public static native void styleInput(Element input) /*-{
+		var fakeFileUpload = $doc.createElement('div');
+		fakeFileUpload.className = 'fakefile';
+		fakeFileUpload.appendChild($doc.createElement('input'));
+		var image = $doc.createElement('img');
+		image.src='../button_select.gif';
+		fakeFileUpload.appendChild(image);
+		input.className = 'file hidden';
+		var clone = fakeFileUpload.cloneNode(true);
+		input.parentNode.appendChild(clone);
+		input.relatedElement = clone.getElementsByTagName('input')[0];
+		input.onchange = input.onmouseout = function () {
+		this.relatedElement.value = this.value;
 		}
 	}-*/;
 
@@ -99,13 +116,13 @@ public class Upload4gwt implements EntryPoint {
 
 		}
 		panel.add(lb);
+		final FileUpload upload = new FileUpload();
 		{
 
 			final FlowPanel outer = new FlowPanel();
 			outer.setStyleName("style");
 			final FlowPanel flowPanel = new FlowPanel();
 			flowPanel.setStyleName("fileinputs");
-			final FileUpload upload = new FileUpload();
 			upload.setStyleName("file");
 			upload.setName("styledUploadFormElement");
 			flowPanel.add(upload);
@@ -179,6 +196,7 @@ public class Upload4gwt implements EntryPoint {
 		});
 
 		RootPanel.get().add(form);
-		coolify();
+		// styleAllInputs();
+		styleInput(upload.getElement());
 	}
 }
