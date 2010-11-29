@@ -7,13 +7,13 @@
 
 	<!-- Servlets -->
 	<servlet>
-		<servlet-name>greetServlet</servlet-name>
+		<servlet-name>uploadServiceServlet</servlet-name>
 		<servlet-class>com.siderakis.upload4gwt.server.UploadServiceImpl</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>greetServlet</servlet-name>
-		<url-pattern>/upload4gwt/greet</url-pattern>
+		<servlet-name>uploadServiceServlet</servlet-name>
+		<url-pattern>/upload4gwt/uploadService</url-pattern>
 	</servlet-mapping>
 
 	<!-- Default page to serve -->
