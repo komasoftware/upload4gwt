@@ -25,7 +25,7 @@
 	<!-- Servlets -->
 	<servlet>
 		<servlet-name>uploadServlet</servlet-name>
-		<servlet-class>com.siderakis.upload4gwt.server.FileUpload</servlet-class>
+		<servlet-class>com.siderakis.upload4gwt.server.AppengineUpload</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
