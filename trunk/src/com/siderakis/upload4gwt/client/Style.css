@@ -1,0 +1,64 @@
+@CHARSET "UTF-8";
+
+@def wwidth 200px;
+.styledUploader {
+	-moz-box-shadow: inset 1px 1px 6px #888;
+	-webkit-box-shadow: inset 1px 1px 6px #888;
+	box-shadow: inset 1px 1px 6px #888;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border: 4px #f1f1f1 solid;
+	background: #fff;
+	height: 15px;
+	width: wwidth;
+	padding: 4px 8px 4px 8px;
+	margin: 4px;
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+}
+
+.styledUploader input {
+	border: none;
+	width: wwidth;
+	height: 15px;
+	padding-left: 3px;
+	padding-top: 3px;
+	background-color: transparent;
+	text-align: center;
+}
+
+.styledUploader input:focus {
+	background-color: transparent;
+}
+
+.styledUploader input {
+	width: wwidth;
+	margin: 0;
+}
+
+.styledUploader>input {
+	position: relative;
+	text-align: center;
+	-moz-opacity: 0;
+	filter: alpha(opacity :           0);
+	opacity: 0;
+	z-index: 2;
+}
+
+.styledUploader>div {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: wwidth;
+	padding: 0;
+	margin: 0;
+	z-index: 1;
+	line-height: 90%;
+}
+
+.styledUploader>div>div>input {
+	margin-bottom: 5px;
+	margin-left: 0;
+}

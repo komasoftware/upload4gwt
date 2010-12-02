@@ -27,14 +27,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class Upload4gwt implements EntryPoint {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL()
-	+ "upload";
+			+ "upload";
 	/**
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
 	 */
 	private static final String SERVER_ERROR = "An error occurred while "
-		+ "attempting to contact the server. Please check your network "
-		+ "connection and try again.";
+			+ "attempting to contact the server. Please check your network "
+			+ "connection and try again.";
 
 	public static native void styleAllInputs() /*-{
 		var fakeFileUpload = $doc.createElement('div');
@@ -73,10 +73,25 @@ public class Upload4gwt implements EntryPoint {
 		}
 	}-*/;
 
+	public static native void styleInput(Element input, String defaultText) /*-{
+		var fakeFileUpload = $doc.createElement('div');
+		fakeFileUpload.appendChild($doc.createElement('input'));
+		var clone = fakeFileUpload.cloneNode(true);
+		input.parentNode.appendChild(clone);
+		input.relatedElement = clone.getElementsByTagName('input')[0];
+		input.relatedElement.value = defaultText;
+		input.onchange = input.onmouseout = function () {
+		this.relatedElement.value = (this.value=="")?defaultText:this.value;
+		}
+	}-*/;
+
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting
 	 * service.
 	 */
+	private static final UploadResources res = GWT
+			.create(UploadResources.class);
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -94,6 +109,25 @@ public class Upload4gwt implements EntryPoint {
 		// Create a panel to hold all of the form widgets.
 		final VerticalPanel panel = new VerticalPanel();
 		form.setWidget(panel);
+		{
+			final FileUpload upload = new FileUpload();
+			res.style().ensureInjected();
+			final FlowPanel outer = new FlowPanel();
+			outer.setStyleName(res.style().styledUploader());
+			outer.add(upload);
+
+			upload.setName("styledUploadFormElement");
+
+			// final FlowPanel name = new FlowPanel();
+			// name.setStyleName("fakefile");
+			// flowPanel.add(name);
+			// final Label hi = new Label("hi");
+			// upload.getElement().insertFirst(hi.getElement());
+			panel.add(new Label("Styled File Input:"));
+
+			panel.add(outer);
+			styleInput(upload.getElement(),"Select a file");
+		}
 
 		// Create a TextBox, giving it a name so that it will be submitted.
 		final TextBox tb = new TextBox();
