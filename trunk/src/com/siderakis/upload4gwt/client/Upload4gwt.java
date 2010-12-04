@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -133,6 +134,7 @@ public class Upload4gwt implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		panel.setStyleName("panel");
+		panel.add(new HTML("Upload4gwt"));
 		// Create a FormPanel and point it at a service.
 		final FormPanel form = new FormPanel();
 		form.setAction(UPLOAD_ACTION_URL);

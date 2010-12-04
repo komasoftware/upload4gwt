@@ -3,10 +3,17 @@ div.gwt-Label {
 	cursor: default;
 }
 
+div.gwt-HTML {
+	text-align: center;
+	font: 40px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+	text-shadow: rgba(64, 64, 64, 0.496094) -6px -2px 6px;
+	-webkit-box-shadow: rgba(0, 0, 128, 0.246094) 0px 0px 0px;
+}
+
 .panel {
-	width: 600px;
+	width: 320px;
 	margin: 4em auto;
-	padding:40px;
+	padding: 20px 40px 40px;
 	-moz-box-shadow: inset 1px 1px 6px #888;
 	-webkit-box-shadow: inset 1px 1px 6px #888;
 	box-shadow: inset 1px 1px 6px #888;
@@ -46,7 +53,7 @@ div.style input.file.hidden {
 	position: relative;
 	text-align: right;
 	-moz-opacity: 0;
-	filter: alpha(opacity :           0);
+	filter: alpha(opacity :                 0);
 	opacity: 0;
 	z-index: 2;
 }
