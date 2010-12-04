@@ -19,7 +19,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -27,35 +26,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class Upload4gwt implements EntryPoint {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL()
-			+ "upload";
-	/**
-	 * The message displayed to the user when the server cannot be reached or
-	 * returns an error.
-	 */
-	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network "
-			+ "connection and try again.";
+	+ "upload";
 
-	public static native void styleAllInputs() /*-{
-		var fakeFileUpload = $doc.createElement('div');
-		fakeFileUpload.className = 'fakefile';
-		fakeFileUpload.appendChild($doc.createElement('input'));
-		var image = $doc.createElement('img');
-		image.src='../button_select.gif';
-		fakeFileUpload.appendChild(image);
-		var x = $doc.getElementsByTagName('input');
-		for (var i=0;i<x.length;i++) {
-		if (x[i].type != 'file') continue;
-		if (x[i].parentNode.className != 'fileinputs') continue;
-		x[i].className = 'file hidden';
-		var clone = fakeFileUpload.cloneNode(true);
-		x[i].parentNode.appendChild(clone);
-		x[i].relatedElement = clone.getElementsByTagName('input')[0];
-		x[i].onchange = x[i].onmouseout = function () {
-		this.relatedElement.value = this.value;
-		}
-		}
-	}-*/;
+	private static final UploadResources res = GWT
+	.create(UploadResources.class);
 
 	public static native void styleInput(Element input) /*-{
 		var fakeFileUpload = $doc.createElement('div');
@@ -85,108 +59,52 @@ public class Upload4gwt implements EntryPoint {
 		}
 	}-*/;
 
-	/**
-	 * Create a remote service proxy to talk to the server-side Greeting
-	 * service.
-	 */
-	private static final UploadResources res = GWT
-			.create(UploadResources.class);
+	// Create a panel to hold all of the form widgets.
+	final FlowPanel panel = new FlowPanel();
 
-	/**
-	 * This is the entry point method.
-	 */
-	@Override
-	public void onModuleLoad() {
-		// Create a FormPanel and point it at a service.
-		final FormPanel form = new FormPanel();
-		form.setAction(UPLOAD_ACTION_URL);
-
-		// Because we're going to add a FileUpload widget, we'll need to set the
-		// form to use the POST method, and multipart MIME encoding.
-		form.setEncoding(FormPanel.ENCODING_MULTIPART);
-		form.setMethod(FormPanel.METHOD_POST);
-
-		// Create a panel to hold all of the form widgets.
-		final VerticalPanel panel = new VerticalPanel();
-		form.setWidget(panel);
-		{
-			final FileUpload upload = new FileUpload();
-			res.style().ensureInjected();
-			final FlowPanel outer = new FlowPanel();
-			outer.setStyleName(res.style().styledUploader());
-			outer.add(upload);
-
-			upload.setName("styledUploadFormElement");
-
-			// final FlowPanel name = new FlowPanel();
-			// name.setStyleName("fakefile");
-			// flowPanel.add(name);
-			// final Label hi = new Label("hi");
-			// upload.getElement().insertFirst(hi.getElement());
-			panel.add(new Label("Styled File Input:"));
-
-			panel.add(outer);
-			styleInput(upload.getElement(),"Select a file");
-		}
-
-		// Create a TextBox, giving it a name so that it will be submitted.
-		final TextBox tb = new TextBox();
-		tb.setName("textBoxFormElement");
-		panel.add(tb);
-
-		// Create a ListBox, giving it a name and some values to be associated
-		// with its options.
-		final ListBox lb = new ListBox();
-		lb.setName("listBoxFormElement");
-		lb.addItem("foo", "fooValue");
-		lb.addItem("bar", "barValue");
-		lb.addItem("baz", "bazValue");
-		panel.add(lb);
-		{
-			panel.add(new Label("Single File:"));
-			final FileUpload upload = new FileUpload();
-			upload.setName("singpleUploadFormElement");
-			panel.add(upload);
-
-		}
-		panel.add(lb);
+	private void addCSSStyledInput() {
 		final FileUpload upload = new FileUpload();
-		{
+		final FlowPanel outer = new FlowPanel();
+		outer.setStyleName("style");
+		final FlowPanel flowPanel = new FlowPanel();
+		flowPanel.setStyleName("fileinputs");
+		upload.setStyleName("file");
+		upload.setName("styledUploadFormElement");
+		flowPanel.add(upload);
 
-			final FlowPanel outer = new FlowPanel();
-			outer.setStyleName("style");
-			final FlowPanel flowPanel = new FlowPanel();
-			flowPanel.setStyleName("fileinputs");
-			upload.setStyleName("file");
-			upload.setName("styledUploadFormElement");
-			flowPanel.add(upload);
+		panel.add(new Label("Image Styled File Input:"));
+		outer.add(flowPanel);
+		panel.add(outer);
+		styleInput(upload.getElement());
+	}
 
-			// final FlowPanel name = new FlowPanel();
-			// name.setStyleName("fakefile");
-			// flowPanel.add(name);
-			// final Label hi = new Label("hi");
-			// upload.getElement().insertFirst(hi.getElement());
-			panel.add(new Label("Styled File Input:"));
-			outer.add(flowPanel);
-			panel.add(outer);
-		}
-		//
+	private void addImageStyledInput() {
+		final FileUpload upload = new FileUpload();
+		res.style().ensureInjected();
+		final FlowPanel outer = new FlowPanel();
+		outer.setStyleName(res.style().styledUploader());
+		outer.add(upload);
+
+		upload.setName("styledUploadFormElement");
+		panel.add(new Label("CSS Styled File Input:"));
+
+		panel.add(outer);
+		styleInput(upload.getElement(), "Select a file");
+	}
+
+	private void addMultiUploadInput() {
 		final FileInput fileInput = new FileInput();
 		fileInput.setAllowMultipleFiles(true);
 		// Create a FileUpload widget.
-		panel.add(new Label(fileInput.supportsFileAPI() ? "File(s):" : "File:"));
+		panel.add(new Label(
+				fileInput.supportsFileAPI() ? "Select multiple files:"
+						: "Your browser doesn't support multiple files!:"));
 
 		fileInput.setName("uploadFormElement");
 
 		// final FileUpload upload = new FileUpload();
 		panel.add(fileInput);
-		// Add a 'submit' button.
-		panel.add(new Button("Submit", new ClickHandler() {
-			@Override
-			public void onClick(final ClickEvent event) {
-				form.submit();
-			}
-		}));
+
 		final FlexTable table = new FlexTable();
 		panel.add(table);
 		fileInput.addChangeHandler(new ChangeHandler() {
@@ -203,7 +121,57 @@ public class Upload4gwt implements EntryPoint {
 				}
 			}
 		});
+	}
 
+	private void addSingleUploadInput() {
+		panel.add(new Label("Single File:"));
+		final FileUpload upload = new FileUpload();
+		upload.setName("singpleUploadFormElement");
+		panel.add(upload);
+	}
+
+	@Override
+	public void onModuleLoad() {
+		panel.setStyleName("panel");
+		// Create a FormPanel and point it at a service.
+		final FormPanel form = new FormPanel();
+		form.setAction(UPLOAD_ACTION_URL);
+
+		// Because we're going to add a FileUpload widget, we'll need to set the
+		// form to use the POST method, and multipart MIME encoding.
+		form.setEncoding(FormPanel.ENCODING_MULTIPART);
+		form.setMethod(FormPanel.METHOD_POST);
+
+		form.setWidget(panel);
+		addImageStyledInput();
+		addCSSStyledInput();
+		addMultiUploadInput();
+		addSingleUploadInput();
+
+		// Create a TextBox, giving it a name so that it will be submitted.
+		panel.add(new Label("Textbox:"));
+		final TextBox tb = new TextBox();
+		tb.setName("textBoxFormElement");
+		panel.add(tb);
+
+		// Create a ListBox, giving it a name and some values to be associated
+		// with its options.
+		panel.add(new Label("Listbox:"));
+		final ListBox lb = new ListBox();
+		lb.setName("listBoxFormElement");
+		lb.addItem("foo", "fooValue");
+		lb.addItem("bar", "barValue");
+		lb.addItem("baz", "bazValue");
+		panel.add(lb);
+		panel.add(lb);
+		panel.add(new Label("Submit:"));
+		// Add a 'submit' button.
+		panel.add(new Button("Submit", new ClickHandler() {
+			@Override
+			public void onClick(final ClickEvent event) {
+				form.submit();
+			}
+		}));
 		// Add an event handler to the form.
 		form.addSubmitHandler(new FormPanel.SubmitHandler() {
 			@Override
@@ -230,7 +198,6 @@ public class Upload4gwt implements EntryPoint {
 		});
 
 		RootPanel.get().add(form);
-		// styleAllInputs();
-		styleInput(upload.getElement());
+
 	}
 }
