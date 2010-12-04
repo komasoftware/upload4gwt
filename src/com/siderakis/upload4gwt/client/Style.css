@@ -12,7 +12,7 @@
 	height: 15px;
 	width: wwidth;
 	padding: 4px 8px 4px 8px;
-	margin: 4px;
+	margin: 0px 4px 4px -4px;
 	text-align: center;
 	cursor: pointer;
 	position: relative;
@@ -41,7 +41,7 @@
 	position: relative;
 	text-align: center;
 	-moz-opacity: 0;
-	filter: alpha(opacity :             0);
+	filter: alpha(opacity :                 0);
 	opacity: 0;
 	z-index: 2;
 }
