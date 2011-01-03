@@ -1,6 +1,7 @@
 package com.siderakis.upload4gwt.server;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import org.apache.commons.fileupload.ProgressListener;
 
@@ -14,28 +15,24 @@ public class AppengineListener implements ProgressListener, Serializable {
 	private Long bytesRead = 0L, contentLength = 0L;
 
 	private final Integer sleepMilliseconds = 1000;
+	private static final Logger log = Logger.getLogger(AppengineListener.class.getName());
 
 	public Integer getPercentage() {
-		System.out.println("pContentLength:bytesRead::" + contentLength + ":"
-				+ bytesRead);
-		return contentLength.equals(0L) ? 0 : Math.round(bytesRead * 100
-				/ contentLength);
+		log.info("pContentLength:bytesRead::" + contentLength + ":" + bytesRead);
+		return contentLength.equals(0L) ? 0 : Math.round(bytesRead * 100 / contentLength);
 
 	}
 
 	@Override
-	public void update(final long bytesRead, final long contentLength,
-			final int items) {
+	public void update(final long bytesRead, final long contentLength, final int items) {
 
 		this.bytesRead = bytesRead;
 		this.contentLength = contentLength;
-		System.out.println("We are currently reading item " + items);
+		log.info("We are currently reading item " + items);
 		if (contentLength == -1) {
-			System.out.println("So far, " + bytesRead
-					+ " bytes have been read.");
+			log.info("So far, " + bytesRead + " bytes have been read.");
 		} else {
-			System.out.println("So far, " + bytesRead + " of " + contentLength
-					+ " bytes have been read.");
+			log.info("So far, " + bytesRead + " of " + contentLength + " bytes have been read.");
 		}
 		if (sleepMilliseconds > 0 && bytesRead < contentLength) {
 			try {

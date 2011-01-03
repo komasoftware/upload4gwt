@@ -11,22 +11,20 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasName;
 import com.google.gwt.user.client.ui.Widget;
 
-
 public class FileInput extends Widget implements HasName, HasChangeHandlers {
 
 	private static class FileInputImpl {
 		public native JsArray<File> getFiles(InputElement inputElement) /*-{
 			return inputElement.value && inputElement.value!=""?
-				[{fileName: inputElement.value, fileSize: -1}]:
-				[];
+			[{fileName: inputElement.value, fileSize: -1}]:
+			[];
 		}-*/;
 
 		public boolean isAllowMultipleFiles(final InputElement inputElement) {
 			return false;
 		}
 
-		public void setAllowMultipleFiles(final InputElement inputElement,
-				final boolean allow) {
+		public void setAllowMultipleFiles(final InputElement inputElement, final boolean allow) {
 		}
 
 		public boolean supportsFileAPI() {
@@ -47,8 +45,7 @@ public class FileInput extends Widget implements HasName, HasChangeHandlers {
 		}
 
 		@Override
-		public void setAllowMultipleFiles(final InputElement inputElement,
-				final boolean allow) {
+		public void setAllowMultipleFiles(final InputElement inputElement, final boolean allow) {
 			if (allow) {
 				inputElement.setAttribute("multiple", "");
 			} else {

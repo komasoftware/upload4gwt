@@ -8,8 +8,7 @@ import com.siderakis.upload4gwt.client.UploadService;
 
 @SuppressWarnings("serial")
 @Singleton
-public class UploadServiceImpl extends RemoteServiceServlet implements
-		UploadService {
+public class UploadServiceImpl extends RemoteServiceServlet implements UploadService {
 
 	@Inject
 	private Provider<AppengineListener> progressListenerProvider;
