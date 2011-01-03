@@ -17,13 +17,18 @@ import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+
+@Singleton
 public class AppengineUpload extends HttpServlet {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AppengineUpload.class
 			.getName());
+
+	@Inject
+	private Provider<AppengineListener> progressListenerProvider;
 
 	@Override
 	public void doPost(final HttpServletRequest req,
@@ -35,12 +40,12 @@ public class AppengineUpload extends HttpServlet {
 			res.setContentType("text/plain");
 
 			// Create a progress listener
-			final ProgressListener progressListener = new AppengineListener();
+			final ProgressListener progressListener = progressListenerProvider
+					.get();
 			upload.setProgressListener(progressListener);
 
 			try {
 				final FileItemIterator iterator = upload.getItemIterator(req);
-
 				while (iterator.hasNext()) {
 					final FileItemStream item = iterator.next();
 					final InputStream in = item.openStream();
