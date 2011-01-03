@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -27,10 +26,10 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public class Upload4gwt implements EntryPoint {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL()
-	+ "upload";
+			+ "upload";
 
 	private static final UploadResources res = GWT
-	.create(UploadResources.class);
+			.create(UploadResources.class);
 
 	public static native void styleInput(Element input) /*-{
 		var fakeFileUpload = $doc.createElement('div');
@@ -174,16 +173,18 @@ public class Upload4gwt implements EntryPoint {
 				form.submit();
 			}
 		}));
+
+		final ProgressSyncer progressSyncer = new ProgressSyncer();
 		// Add an event handler to the form.
 		form.addSubmitHandler(new FormPanel.SubmitHandler() {
 			@Override
 			public void onSubmit(final SubmitEvent event) {
 				// This event is fired just before the form is submitted. We can
 				// take this opportunity to perform validation.
-				if (tb.getText().length() == 0) {
-					Window.alert("The text box must not be empty");
-					event.cancel();
-				}
+				// if () {
+				// event.cancel();
+				// }
+				progressSyncer.start();
 			}
 		});
 
@@ -195,7 +196,8 @@ public class Upload4gwt implements EntryPoint {
 				// type
 				// text/html, we can get the result text here (see the FormPanel
 				// documentation for further explanation).
-				Window.alert(event.getResults());
+				// Window.alert(event.getResults());
+				progressSyncer.stop();
 			}
 		});
 
