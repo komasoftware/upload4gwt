@@ -25,11 +25,9 @@ import com.google.gwt.user.client.ui.TextBox;
  * 
  */
 public class Upload4gwt implements EntryPoint {
-	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL()
-			+ "upload";
+	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
 
-	private static final UploadResources res = GWT
-			.create(UploadResources.class);
+	private static final UploadResources res = GWT.create(UploadResources.class);
 
 	public static native void styleInput(Element input) /*-{
 		var fakeFileUpload = $doc.createElement('div');
@@ -96,9 +94,8 @@ public class Upload4gwt implements EntryPoint {
 		final FileInput fileInput = new FileInput();
 		fileInput.setAllowMultipleFiles(true);
 		// Create a FileUpload widget.
-		panel.add(new Label(
-				fileInput.supportsFileAPI() ? "Select multiple files:"
-						: "Your browser doesn't support multiple files!:"));
+		panel.add(new Label(fileInput.supportsFileAPI() ? "Select multiple files:"
+				: "Your browser doesn't support multiple files!:"));
 
 		fileInput.setName("uploadFormElement");
 

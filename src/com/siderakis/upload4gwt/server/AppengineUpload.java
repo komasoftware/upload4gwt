@@ -24,15 +24,14 @@ import com.google.inject.Singleton;
 @Singleton
 public class AppengineUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(AppengineUpload.class
-			.getName());
+	private static final Logger log = Logger.getLogger(AppengineUpload.class.getName());
 
 	@Inject
 	private Provider<AppengineListener> progressListenerProvider;
 
 	@Override
-	public void doPost(final HttpServletRequest req,
-			final HttpServletResponse res) throws ServletException, IOException {
+	public void doPost(final HttpServletRequest req, final HttpServletResponse res) throws ServletException,
+			IOException {
 
 		try {
 			final ServletFileUpload upload = new ServletFileUpload();
@@ -40,8 +39,7 @@ public class AppengineUpload extends HttpServlet {
 			res.setContentType("text/plain");
 
 			// Create a progress listener
-			final ProgressListener progressListener = progressListenerProvider
-					.get();
+			final ProgressListener progressListener = progressListenerProvider.get();
 			upload.setProgressListener(progressListener);
 
 			try {
@@ -58,8 +56,7 @@ public class AppengineUpload extends HttpServlet {
 						String fileName = item.getName();
 						String contentType = item.getContentType();
 
-						log.warning("Got an uploaded file: " + fieldName
-								+ ", name = " + fileName + ", contentType = "
+						log.warning("Got an uploaded file: " + fieldName + ", name = " + fileName + ", contentType = "
 								+ contentType);
 						try {
 							String output = IOUtils.toString(in);
@@ -73,8 +70,7 @@ public class AppengineUpload extends HttpServlet {
 
 			} catch (SizeLimitExceededException e) {
 				PrintWriter out = res.getWriter();
-				out.println("You exceeded the maximu size ("
-						+ e.getPermittedSize() + ") of the file ("
+				out.println("You exceeded the maximu size (" + e.getPermittedSize() + ") of the file ("
 						+ e.getActualSize() + ")");
 			}
 		} catch (final Exception ex) {
