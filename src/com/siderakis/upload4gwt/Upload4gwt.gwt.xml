@@ -2,7 +2,7 @@
 <module rename-to='upload4gwt'>
 	<inherits name='com.google.gwt.user.User' />
 	<inherits name='com.google.gwt.user.theme.standard.Standard' />
-	<entry-point class='com.siderakis.upload4gwt.client.Upload4gwt' />
+
 	<source path='client' />
 	<source path='shared' />
 	<define-property name="fileapi.support" values="yes,no" />

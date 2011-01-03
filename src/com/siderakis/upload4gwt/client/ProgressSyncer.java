@@ -6,8 +6,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class ProgressSyncer {
 
-	final UploadServiceAsync uploadService = GWT.create(UploadService.class);
-	Timer timer = new Timer() {
+	private final UploadServiceAsync uploadService = GWT.create(UploadService.class);
+	private final Timer timer = new Timer() {
 
 		@Override
 		public void run() {
@@ -15,7 +15,7 @@ public class ProgressSyncer {
 
 				@Override
 				public void onSuccess(String result) {
-					GWT.log(result);
+					hasProgress.setProgress(Integer.parseInt(result));
 				}
 
 				@Override
@@ -25,9 +25,10 @@ public class ProgressSyncer {
 			});
 		}
 	};
+	private final HasProgress hasProgress;
 
-	public ProgressSyncer() {
-
+	public ProgressSyncer(HasProgress hasProgress) {
+		this.hasProgress = hasProgress;
 	}
 
 	public void stop() {
