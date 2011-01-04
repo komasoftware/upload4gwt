@@ -52,14 +52,14 @@ public class AppengineUpload extends HttpServlet {
 						log.warning("Got a form field: " + item.getFieldName());
 					} else {
 
-						String fieldName = item.getFieldName();
-						String fileName = item.getName();
-						String contentType = item.getContentType();
+						final String fieldName = item.getFieldName();
+						final String fileName = item.getName();
+						final String contentType = item.getContentType();
 
 						log.warning("Got an uploaded file: " + fieldName + ", name = " + fileName + ", contentType = "
 								+ contentType);
 						try {
-							String output = IOUtils.toString(in);
+							final String output = IOUtils.toString(in);
 							log.warning(output);
 						} finally {
 							IOUtils.closeQuietly(in);
@@ -68,8 +68,8 @@ public class AppengineUpload extends HttpServlet {
 
 				}
 
-			} catch (SizeLimitExceededException e) {
-				PrintWriter out = res.getWriter();
+			} catch (final SizeLimitExceededException e) {
+				final PrintWriter out = res.getWriter();
 				out.println("You exceeded the maximu size (" + e.getPermittedSize() + ") of the file ("
 						+ e.getActualSize() + ")");
 			}
