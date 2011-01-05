@@ -1,9 +1,12 @@
-package com.siderakis.upload4gwt.client;
+package com.siderakis.upload4gwt.client.rpc;
+
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.siderakis.upload4gwt.shared.UploadStatus;
 
 @RemoteServiceRelativePath("uploadService")
 public interface UploadService extends RemoteService {
-	String getPercentage(String name) throws IllegalArgumentException;
+	List<UploadStatus> getUploadStatus(List<Long> uploadIds) throws IllegalArgumentException;
 }

@@ -14,10 +14,10 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.siderakis.upload4gwt.client.File;
-import com.siderakis.upload4gwt.client.FileInput;
 import com.siderakis.upload4gwt.client.ProgressSyncer;
-import com.siderakis.upload4gwt.client.SimpleProgressBar;
+import com.siderakis.upload4gwt.client.ui.File;
+import com.siderakis.upload4gwt.client.ui.FileInput;
+import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 
 public class MultiSelectDemo extends Composite {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
@@ -73,7 +73,7 @@ public class MultiSelectDemo extends Composite {
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
 
-		final ProgressSyncer progressSyncer = new ProgressSyncer(simpleProgressBar);
+		final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
 
 		form.addSubmitHandler(new FormPanel.SubmitHandler() {
 			@Override

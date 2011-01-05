@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.siderakis.upload4gwt.client.ProgressSyncer;
-import com.siderakis.upload4gwt.client.SimpleProgressBar;
-import com.siderakis.upload4gwt.client.UploadResources;
+import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
+import com.siderakis.upload4gwt.client.ui.UploadResources;
 
 public class StyledInputDemo extends Composite {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
@@ -108,7 +108,7 @@ public class StyledInputDemo extends Composite {
 
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
-		final ProgressSyncer progressSyncer = new ProgressSyncer(simpleProgressBar);
+		final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
 		form.addSubmitHandler(new FormPanel.SubmitHandler() {
 			@Override
 			public void onSubmit(final SubmitEvent event) {
