@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
-import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
@@ -39,7 +38,10 @@ public class AppengineUpload extends HttpServlet {
 			res.setContentType("text/plain");
 
 			// Create a progress listener
-			final ProgressListener progressListener = progressListenerProvider.get();
+			final AppengineListener progressListener = progressListenerProvider.get();
+			Long uploadId = Long.valueOf(req.getParameter("uploadId"));
+			log.warning("uploadId: " + uploadId);
+			progressListener.setUploadId(uploadId);
 			upload.setProgressListener(progressListener);
 
 			try {

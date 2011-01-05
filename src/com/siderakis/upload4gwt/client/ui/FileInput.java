@@ -1,4 +1,4 @@
-package com.siderakis.upload4gwt.client;
+package com.siderakis.upload4gwt.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;

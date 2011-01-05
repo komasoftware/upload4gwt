@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.siderakis.upload4gwt.client.ProgressSyncer;
-import com.siderakis.upload4gwt.client.SimpleProgressBar;
+import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -38,8 +38,9 @@ public class FullFormDemo extends Composite {
 		panel.setStyleName("panel");
 		panel.add(new HTML("Upload4gwt"));
 		// Create a FormPanel and point it at a service.
+		final Long uploadId = ProgressSyncer.getInstance().getNextId();
 		final FormPanel form = new FormPanel();
-		form.setAction(UPLOAD_ACTION_URL);
+		form.setAction(UPLOAD_ACTION_URL + "?uploadId=" + uploadId);
 
 		// Because we're going to add a FileUpload widget, we'll need to set the
 		// form to use the POST method, and multipart MIME encoding.
@@ -75,7 +76,8 @@ public class FullFormDemo extends Composite {
 
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
-		final ProgressSyncer progressSyncer = new ProgressSyncer(simpleProgressBar);
+		final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
+
 		// Add an event handler to the form.
 		form.addSubmitHandler(new FormPanel.SubmitHandler() {
 			@Override
@@ -85,10 +87,10 @@ public class FullFormDemo extends Composite {
 				// if () {
 				// event.cancel();
 				// }
+				progressSyncer.addStatusDisplay(uploadId, simpleProgressBar);
 				progressSyncer.start();
 			}
 		});
-
 		form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 			@Override
 			public void onSubmitComplete(final SubmitCompleteEvent event) {

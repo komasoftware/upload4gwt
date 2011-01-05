@@ -1,10 +1,11 @@
-package com.siderakis.upload4gwt.client;
+package com.siderakis.upload4gwt.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.siderakis.upload4gwt.client.HasProgress;
 
 public class SimpleProgressBar extends Composite implements HasProgress {
 
