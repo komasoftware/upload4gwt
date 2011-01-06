@@ -15,9 +15,9 @@ public class Upload4gwt implements EntryPoint {
 	public void onModuleLoad() {
 
 		TabLayoutPanel layoutPanel = new TabLayoutPanel(30, Unit.PX);
+		layoutPanel.add(new FullFormDemo(), "Form-Data Demo");
 		layoutPanel.add(new MultiSelectDemo(), "Multi-Select Demo");
 		layoutPanel.add(new StyledInputDemo(), "Styled-Input Demo");
-		layoutPanel.add(new FullFormDemo(), "Form-Data Demo");
 		RootLayoutPanel.get().add(layoutPanel);
 
 	}

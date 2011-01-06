@@ -9,12 +9,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.siderakis.upload4gwt.client.ProgressSyncer;
+import com.siderakis.upload4gwt.client.UploadFormPanel;
 import com.siderakis.upload4gwt.client.ui.File;
 import com.siderakis.upload4gwt.client.ui.FileInput;
 import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
@@ -55,11 +52,8 @@ public class MultiSelectDemo extends Composite {
 	public MultiSelectDemo() {
 		panel.setStyleName("panel");
 		panel.add(new HTML("Upload4gwt"));
-		final FormPanel form = new FormPanel();
+		final UploadFormPanel form = new UploadFormPanel();
 		form.setAction(UPLOAD_ACTION_URL);
-
-		form.setEncoding(FormPanel.ENCODING_MULTIPART);
-		form.setMethod(FormPanel.METHOD_POST);
 
 		form.setWidget(panel);
 		addMultiUploadInput();
@@ -72,23 +66,7 @@ public class MultiSelectDemo extends Composite {
 
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
-
-		final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
-
-		form.addSubmitHandler(new FormPanel.SubmitHandler() {
-			@Override
-			public void onSubmit(final SubmitEvent event) {
-				progressSyncer.start();
-			}
-		});
-
-		form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
-			@Override
-			public void onSubmitComplete(final SubmitCompleteEvent event) {
-				progressSyncer.stop();
-			}
-		});
-
+		form.setStatusDisplay(simpleProgressBar);
 		initWidget(form);
 
 	}
