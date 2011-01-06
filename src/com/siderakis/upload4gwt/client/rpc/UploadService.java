@@ -8,7 +8,7 @@ import com.siderakis.upload4gwt.shared.UploadStatus;
 
 @RemoteServiceRelativePath("uploadService")
 public interface UploadService extends RemoteService {
-	List<UploadStatus> getUploadStatus(List<Long> uploadIds) throws IllegalArgumentException;
+	List<UploadStatus> getUploadStatus(List<String> uploadIds) throws IllegalArgumentException;
 
-	String getInitialUploadId();
+	String getUploadIdPrefix();
 }

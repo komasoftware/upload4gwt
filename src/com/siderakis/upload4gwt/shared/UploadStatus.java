@@ -8,7 +8,7 @@ public class UploadStatus implements Serializable {
 
 	private Long bytesRead;
 	private Long contentLength;
-	private Long id;
+	private String key;
 
 	@SuppressWarnings("unused")
 	private UploadStatus() {
@@ -17,19 +17,15 @@ public class UploadStatus implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UploadStatus [bytesRead=" + bytesRead + ", contentLength=" + contentLength + ", id=" + id
+		return "UploadStatus [bytesRead=" + bytesRead + ", contentLength=" + contentLength + ", id=" + key
 				+ ", getPercentage()=" + getPercentage() + "]";
 	}
 
-	public UploadStatus(Long id, Long part, Long total) {
+	public UploadStatus(String id, Long part, Long total) {
 		super();
-		this.id = id;
+		this.key = id;
 		this.bytesRead = part;
 		this.contentLength = total;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getDisplaySpeed() {
@@ -41,7 +37,7 @@ public class UploadStatus implements Serializable {
 	}
 
 	public String getName() {
-		return id + "";
+		return key;
 	}
 
 	public Boolean isFinished() {
