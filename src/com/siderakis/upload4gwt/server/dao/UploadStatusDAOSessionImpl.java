@@ -4,8 +4,10 @@ import javax.servlet.http.HttpSession;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
+@Singleton
 public class UploadStatusDAOSessionImpl implements UploadStatusDAO {
 
 	@Inject

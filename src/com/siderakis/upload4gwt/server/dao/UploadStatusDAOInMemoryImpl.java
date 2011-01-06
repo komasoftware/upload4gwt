@@ -3,8 +3,10 @@ package com.siderakis.upload4gwt.server.dao;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Singleton;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
+@Singleton
 public class UploadStatusDAOInMemoryImpl implements UploadStatusDAO {
 
 	private final Map<String, UploadStatus> uploadStatusMap = new HashMap<String, UploadStatus>();
