@@ -39,7 +39,7 @@ public class AppengineUpload extends HttpServlet {
 
 			// Create a progress listener
 			final AppengineListener progressListener = progressListenerProvider.get();
-			Long uploadId = Long.valueOf(req.getParameter("uploadId"));
+			String uploadId = req.getParameter("uploadId");
 			log.warning("uploadId: " + uploadId);
 			progressListener.setUploadId(uploadId);
 			upload.setProgressListener(progressListener);

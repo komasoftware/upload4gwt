@@ -19,9 +19,9 @@ public class UploadServiceImpl extends RemoteServiceServlet implements UploadSer
 	private UploadStatusDAO uploadStatusDAO;
 
 	@Override
-	public List<UploadStatus> getUploadStatus(List<Long> uploadIds) throws IllegalArgumentException {
+	public List<UploadStatus> getUploadStatus(List<String> uploadIds) throws IllegalArgumentException {
 		List<UploadStatus> uploadStatus = new ArrayList<UploadStatus>();
-		for (Long id : uploadIds) {
+		for (String id : uploadIds) {
 
 			log.warning("getting uploadstatus for id: " + id);
 
@@ -38,7 +38,7 @@ public class UploadServiceImpl extends RemoteServiceServlet implements UploadSer
 	}
 
 	@Override
-	public String getInitialUploadId() {
+	public String getUploadIdPrefix() {
 		return uploadStatusDAO.getBaseUploadId();
 	}
 

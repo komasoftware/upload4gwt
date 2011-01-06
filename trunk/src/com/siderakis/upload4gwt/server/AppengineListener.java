@@ -18,9 +18,9 @@ public class AppengineListener implements ProgressListener, Serializable {
 	private final Integer sleepMilliseconds = 1000;
 	private static final Logger log = Logger.getLogger(AppengineListener.class.getName());
 
-	private Long uploadId;
+	private String uploadId;
 
-	public void setUploadId(Long uploadId) {
+	public void setUploadId(String uploadId) {
 		this.uploadId = uploadId;
 	}
 

@@ -33,7 +33,7 @@ public class ProgressSyncer {
 				public void onSuccess(List<UploadStatus> result) {
 					Boolean allDone = true;
 					for (UploadStatus us : result) {
-						HasProgress statusDisaply = statusDisplays.get(us.getId());
+						HasProgress statusDisaply = statusDisplays.get(us.getName());
 						statusDisaply.setProgress(us);
 						if (!us.isFinished()) {
 							allDone = false;
@@ -53,10 +53,10 @@ public class ProgressSyncer {
 		}
 	};
 
-	private List<Long> getInProgressIds() {
-		List<Long> result = new ArrayList<Long>();
+	private List<String> getInProgressIds() {
+		List<String> result = new ArrayList<String>();
 
-		for (Long display : statusDisplays.keySet()) {
+		for (String display : statusDisplays.keySet()) {
 			if (statusDisplays.get(display) == null || statusDisplays.get(display).getProgress() == null) {
 			} else if (!statusDisplays.get(display).getProgress().isFinished()) {
 				result.add(display);
@@ -65,9 +65,9 @@ public class ProgressSyncer {
 		return result;
 	}
 
-	private final Map<Long, HasProgress> statusDisplays = new HashMap<Long, HasProgress>();
+	private final Map<String, HasProgress> statusDisplays = new HashMap<String, HasProgress>();
 
-	public void addStatusDisplay(Long id, HasProgress statusDisplay) {
+	public void addStatusDisplay(String id, HasProgress statusDisplay) {
 		statusDisplays.put(id, statusDisplay);
 	}
 
@@ -79,13 +79,29 @@ public class ProgressSyncer {
 		timer.scheduleRepeating(500);
 	}
 
-	private Long nextId = 0L;
+	private String baseId = null;
+	private Integer nextId = 0;
 
-	public Long getNextId() {
-		return nextId++;
+	public void getNextId(final AsyncCallback<String> callback) {
+		if (baseId != null) {
+			callback.onSuccess(baseId + nextId++);
+		} else {
+			uploadService.getUploadIdPrefix(new AsyncCallback<String>() {
+
+				@Override
+				public void onSuccess(String result) {
+					baseId = result;
+					callback.onSuccess(baseId + nextId++);
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+				}
+			});
+		}
 	}
 
-	public void start(Long uploadId) {
+	public void start(String uploadId) {
 		if (statusDisplays.get(uploadId) != null) {
 			statusDisplays.get(uploadId).setProgress(new UploadStatus(uploadId, 0L, 0L));
 		}

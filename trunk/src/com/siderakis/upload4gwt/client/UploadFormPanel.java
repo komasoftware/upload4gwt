@@ -1,13 +1,28 @@
 package com.siderakis.upload4gwt.client;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FormPanel;
 
 public class UploadFormPanel extends FormPanel {
-	final Long uploadId = ProgressSyncer.getInstance().getNextId();
+	private String uploadId = null;
 	final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
 
 	public UploadFormPanel() {
 		super();
+
+		progressSyncer.getNextId(new AsyncCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				uploadId = result;
+				setAction(actionBase);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
 
 		// Because we're going to add a FileUpload widget, we'll need to set the
 		// form to use the POST method, and multipart MIME encoding.
@@ -21,9 +36,23 @@ public class UploadFormPanel extends FormPanel {
 				// take this opportunity to perform validation.
 				if (uploadId == null) {
 					event.cancel();
-					// TODO try to get an id
-					// TODO after id is received set it on form
-					// TODO then resubmit
+					GWT.log("UploadId is null");
+					// try to get an id
+					progressSyncer.getNextId(new AsyncCallback<String>() {
+
+						@Override
+						public void onSuccess(String result) {
+							// after id is received set it on form
+							uploadId = result;
+							setAction(actionBase);
+							// then resubmit
+							submit();
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+						}
+					});
 				} else {
 
 					progressSyncer.start(uploadId);
@@ -46,10 +75,12 @@ public class UploadFormPanel extends FormPanel {
 
 	}
 
+	private String actionBase;
+
 	@Override
 	public void setAction(String url) {
-		// if contains ? then use &
-		super.setAction(url + "?uploadId=" + uploadId);
+		actionBase = url;
+		super.setAction(url + (url.contains("?") ? "&" : "?") + "uploadId=" + uploadId);
 	}
 
 	public void setStatusDisplay(HasProgress statusDisplay) {
