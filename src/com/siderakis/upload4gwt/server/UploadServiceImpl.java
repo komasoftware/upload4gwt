@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpSession;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.siderakis.upload4gwt.client.rpc.UploadService;
+import com.siderakis.upload4gwt.server.dao.UploadStatusDAO;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
 @SuppressWarnings("serial")
 @Singleton
 public class UploadServiceImpl extends RemoteServiceServlet implements UploadService {
-	@Inject
-	private Provider<HttpSession> sessionProvider;
 	private static final Logger log = Logger.getLogger(UploadServiceImpl.class.getName());
+	@Inject
+	private UploadStatusDAO uploadStatusDAO;
 
 	@Override
 	public List<UploadStatus> getUploadStatus(List<Long> uploadIds) throws IllegalArgumentException {
@@ -27,10 +25,7 @@ public class UploadServiceImpl extends RemoteServiceServlet implements UploadSer
 
 			log.warning("getting uploadstatus for id: " + id);
 
-			UploadStatus status = (UploadStatus) sessionProvider.get().getAttribute(id + "");
-
-			log.warning("uploadstatus is: " + (status == null ? "null" : status.toString()));
-			status = (UploadStatus) getThreadLocalRequest().getSession().getAttribute(id + "");
+			UploadStatus status = uploadStatusDAO.getUploadStatus(id + "");
 
 			log.warning("uploadstatus is: " + (status == null ? "null" : status.toString()));
 			if (status != null) {
@@ -41,4 +36,10 @@ public class UploadServiceImpl extends RemoteServiceServlet implements UploadSer
 		}
 		return uploadStatus;
 	}
+
+	@Override
+	public String getInitialUploadId() {
+		return uploadStatusDAO.getBaseUploadId();
+	}
+
 }
