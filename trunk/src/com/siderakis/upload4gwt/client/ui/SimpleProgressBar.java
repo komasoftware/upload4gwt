@@ -6,6 +6,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.siderakis.upload4gwt.client.HasProgress;
+import com.siderakis.upload4gwt.shared.UploadStatus;
 
 public class SimpleProgressBar extends Composite implements HasProgress {
 
@@ -25,9 +26,17 @@ public class SimpleProgressBar extends Composite implements HasProgress {
 		initWidget(widget);
 	}
 
+	private UploadStatus uploadStatus;
+
 	@Override
-	public void setProgress(Integer percentage) {
-		widget.setHTML(statusCellSafeHTMLTemplate.status(percentage));
+	public void setProgress(UploadStatus uploadStatus) {
+		this.uploadStatus = uploadStatus;
+		widget.setHTML(statusCellSafeHTMLTemplate.status(uploadStatus.getPercentage()));
+	}
+
+	@Override
+	public UploadStatus getProgress() {
+		return uploadStatus;
 	}
 
 }

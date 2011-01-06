@@ -23,6 +23,7 @@ public class ProgressSyncer {
 	}
 
 	private final UploadServiceAsync uploadService = GWT.create(UploadService.class);
+
 	private final Timer timer = new Timer() {
 		@Override
 		public void run() {
@@ -30,9 +31,17 @@ public class ProgressSyncer {
 
 				@Override
 				public void onSuccess(List<UploadStatus> result) {
+					Boolean allDone = true;
 					for (UploadStatus us : result) {
 						HasProgress statusDisaply = statusDisplays.get(us.getId());
-						statusDisaply.setProgress(us.getPercentage());
+						statusDisaply.setProgress(us);
+						if (!us.isFinished()) {
+							allDone = false;
+						}
+					}
+
+					if (allDone) {
+						stop();
 					}
 				}
 
@@ -45,7 +54,15 @@ public class ProgressSyncer {
 	};
 
 	private List<Long> getInProgressIds() {
-		return new ArrayList<Long>(statusDisplays.keySet());
+		List<Long> result = new ArrayList<Long>();
+
+		for (Long display : statusDisplays.keySet()) {
+			if (statusDisplays.get(display) == null || statusDisplays.get(display).getProgress() == null) {
+			} else if (!statusDisplays.get(display).getProgress().isFinished()) {
+				result.add(display);
+			}
+		}
+		return result;
 	}
 
 	private final Map<Long, HasProgress> statusDisplays = new HashMap<Long, HasProgress>();
@@ -59,13 +76,20 @@ public class ProgressSyncer {
 	}
 
 	public void start() {
-		timer.scheduleRepeating(100);
+		timer.scheduleRepeating(500);
 	}
 
 	private Long nextId = 0L;
 
 	public Long getNextId() {
 		return nextId++;
+	}
+
+	public void start(Long uploadId) {
+		if (statusDisplays.get(uploadId) != null) {
+			statusDisplays.get(uploadId).setProgress(new UploadStatus(uploadId, 0L, 0L));
+		}
+		start();
 	}
 
 }
