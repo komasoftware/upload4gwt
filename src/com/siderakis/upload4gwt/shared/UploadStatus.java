@@ -43,4 +43,8 @@ public class UploadStatus implements Serializable {
 	public String getName() {
 		return id + "";
 	}
+
+	public Boolean isFinished() {
+		return getPercentage().equals(100);
+	}
 }
