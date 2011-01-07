@@ -14,9 +14,9 @@
 	]]></property-provider>
 
 	<replace-with
-		class="com.siderakis.upload4gwt.client.FileInput.FileInputImplHtml5">
+		class="com.siderakis.upload4gwt.client.ui.FileInput.FileInputImplHtml5">
 		<when-type-is
-			class="com.siderakis.upload4gwt.client.FileInput.FileInputImpl" />
+			class="com.siderakis.upload4gwt.client.ui.FileInput.FileInputImpl" />
 		<when-property-is name="fileapi.support" value="yes" />
 		<any>
 			<when-property-is name="user.agent" value="ie8" />
