@@ -20,18 +20,15 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
-@Singleton
-public class AppengineUpload extends HttpServlet {
+@Singleton public class AppengineUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AppengineUpload.class.getName());
 
-	@Inject
-	private Provider<AppengineListener> progressListenerProvider;
+	@Inject private Provider<AppengineListener> progressListenerProvider;
 
-	@Override
-	public void doPost(final HttpServletRequest req, final HttpServletResponse res) throws ServletException,
-			IOException {
-
+	@Override public void doPost(final HttpServletRequest req, final HttpServletResponse res) throws ServletException,
+	IOException {
+		log.warning("Getting a post");
 		try {
 			final ServletFileUpload upload = new ServletFileUpload();
 			upload.setSizeMax(50000);
@@ -39,7 +36,7 @@ public class AppengineUpload extends HttpServlet {
 
 			// Create a progress listener
 			final AppengineListener progressListener = progressListenerProvider.get();
-			String uploadId = req.getParameter("uploadId");
+			final String uploadId = req.getParameter("uploadId");
 			log.warning("uploadId: " + uploadId);
 			progressListener.setUploadId(uploadId);
 			upload.setProgressListener(progressListener);
