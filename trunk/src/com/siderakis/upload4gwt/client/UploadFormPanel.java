@@ -1,3 +1,19 @@
+/*
+ * Copyright 2010 Nick Siderakis.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package com.siderakis.upload4gwt.client;
 
 import com.google.gwt.core.client.GWT;
@@ -8,19 +24,21 @@ public class UploadFormPanel extends FormPanel {
 	private String uploadId = null;
 	final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
 
+	private String actionBase;
+
 	public UploadFormPanel() {
 		super();
 
 		progressSyncer.getNextId(new AsyncCallback<String>() {
 
 			@Override
-			public void onSuccess(String result) {
-				uploadId = result;
-				setAction(actionBase);
+			public void onFailure(final Throwable caught) {
 			}
 
 			@Override
-			public void onFailure(Throwable caught) {
+			public void onSuccess(final String result) {
+				uploadId = result;
+				setAction(actionBase);
 			}
 		});
 
@@ -41,16 +59,16 @@ public class UploadFormPanel extends FormPanel {
 					progressSyncer.getNextId(new AsyncCallback<String>() {
 
 						@Override
-						public void onSuccess(String result) {
+						public void onFailure(final Throwable caught) {
+						}
+
+						@Override
+						public void onSuccess(final String result) {
 							// after id is received set it on form
 							uploadId = result;
 							setAction(actionBase);
 							// then resubmit
 							submit();
-						}
-
-						@Override
-						public void onFailure(Throwable caught) {
 						}
 					});
 				} else {
@@ -75,15 +93,13 @@ public class UploadFormPanel extends FormPanel {
 
 	}
 
-	private String actionBase;
-
 	@Override
-	public void setAction(String url) {
+	public void setAction(final String url) {
 		actionBase = url;
 		super.setAction(url + (url.contains("?") ? "&" : "?") + "uploadId=" + uploadId);
 	}
 
-	public void setStatusDisplay(HasProgress statusDisplay) {
+	public void setStatusDisplay(final HasProgress statusDisplay) {
 		progressSyncer.addStatusDisplay(uploadId, statusDisplay);
 
 	}
