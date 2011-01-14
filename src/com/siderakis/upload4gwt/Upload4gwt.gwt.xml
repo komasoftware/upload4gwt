@@ -1,28 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='upload4gwt'>
-	<inherits name='com.google.gwt.user.User' />
-	<inherits name='com.google.gwt.user.theme.standard.Standard' />
-
-	<source path='client' />
-	<source path='shared' />
-	<define-property name="fileapi.support" values="yes,no" />
-
-	<property-provider name="fileapi.support"><![CDATA[
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+    
+    <source path='client'/>
+    <source path='shared'/>
+    
+    <!-- DND Upload -->
+    <define-property name="filereaderapi.support" values="yes,no"/>
+    <property-provider name="filereaderapi.support">
+        <![CDATA[
+			return window.FileReader==null?'no':'yes';
+	]]>
+    </property-provider>
+    <replace-with
+     class="com.siderakis.upload4gwt.client.dnd.UploadDropChromeImpl">
+        <when-type-is
+         class="com.siderakis.upload4gwt.client.dnd.UploadDropImpl"/>
+        <!--Firefox 3.6, Chrome 6, WebKit-->
+        <when-property-is name="filereaderapi.support" value="yes"/>
+        <any>
+            <when-property-is name="user.agent" value="gecko1_8"/>
+            <when-property-is name="user.agent" value="gecko"/>
+        </any>
+    </replace-with>
+    <replace-with
+     class="com.siderakis.upload4gwt.client.dnd.UploadDropSafaraiImpl">
+        <when-type-is
+         class="com.siderakis.upload4gwt.client.dnd.UploadDropImpl"/>
+        <!--Safarai-->
+        <when-property-is name="filereaderapi.support" value="no"/>
+        <any>
+            <when-property-is name="user.agent" value="safari"/>
+        </any>
+    </replace-with>
+    
+    
+    
+    
+    <!-- Multi-select Upload -->
+    <define-property name="fileapi.support" values="yes,no"/>
+    <property-provider name="fileapi.support">
+        <![CDATA[
 			var input=document.createElement('input');
 			input.setAttribute('type','file');
 			return input.files==null?'no':'yes';
-	]]></property-provider>
-
-	<replace-with
-		class="com.siderakis.upload4gwt.client.ui.FileInput.FileInputImplHtml5">
-		<when-type-is
-			class="com.siderakis.upload4gwt.client.ui.FileInput.FileInputImpl" />
-		<when-property-is name="fileapi.support" value="yes" />
-		<any>
-			<when-property-is name="user.agent" value="ie8" />
-			<when-property-is name="user.agent" value="safari" />
-			<when-property-is name="user.agent" value="gecko1_8" />
-			<when-property-is name="user.agent" value="opera" />
-		</any>
-	</replace-with>
+	]]>
+    </property-provider>
+    
+    <replace-with
+     class="com.siderakis.upload4gwt.client.ui.FileInput.FileInputImplHtml5">
+        <when-type-is
+         class="com.siderakis.upload4gwt.client.ui.FileInput.FileInputImpl"/>
+        <when-property-is name="fileapi.support" value="yes"/>
+        <any>
+            <when-property-is name="user.agent" value="ie8"/>
+            <when-property-is name="user.agent" value="safari"/>
+            <when-property-is name="user.agent" value="gecko1_8"/>
+            <when-property-is name="user.agent" value="opera"/>
+        </any>
+    </replace-with>
 </module>

@@ -38,7 +38,9 @@ import com.google.inject.Singleton;
 			final AppengineListener progressListener = progressListenerProvider.get();
 			final String uploadId = req.getParameter("uploadId");
 			log.warning("uploadId: " + uploadId);
+
 			progressListener.setUploadId(uploadId);
+
 			upload.setProgressListener(progressListener);
 
 			try {
@@ -59,6 +61,7 @@ import com.google.inject.Singleton;
 								+ contentType);
 						try {
 							final String output = IOUtils.toString(in);
+
 							log.warning(output);
 						} finally {
 							IOUtils.closeQuietly(in);
