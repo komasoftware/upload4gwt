@@ -21,26 +21,22 @@ import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 public class FullFormDemo extends Composite {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
 
-	// Create a panel to hold all of the form widgets.
-	final FlowPanel panel = new FlowPanel();
-
-	private void addSingleUploadInput() {
-		panel.add(new Label("Single File:"));
-		final FileUpload upload = new FileUpload();
-		upload.setName("singpleUploadFormElement");
-		panel.add(upload);
-	}
-
 	public FullFormDemo() {
+		// Create a panel to hold all of the form widgets.
+		final FlowPanel panel = new FlowPanel();
 		panel.setStyleName("panel");
 		panel.add(new HTML("Upload4gwt"));
-		// Create a FormPanel and point it at a service.
 
+		// Create a FormPanel and point it at a service.
 		final UploadFormPanel form = new UploadFormPanel();
 		form.setAction(UPLOAD_ACTION_URL);
-
 		form.setWidget(panel);
-		addSingleUploadInput();
+
+		// Create a standard FileUpload.
+		panel.add(new Label("Single File:"));
+		final FileUpload upload = new FileUpload();
+		upload.setName("singleUploadFormElement");
+		panel.add(upload);
 
 		// Create a TextBox, giving it a name so that it will be submitted.
 		panel.add(new Label("Textbox:"));
@@ -57,18 +53,18 @@ public class FullFormDemo extends Composite {
 		lb.addItem("bar", "barValue");
 		lb.addItem("baz", "bazValue");
 		panel.add(lb);
-		panel.add(lb);
+
 		// Add a 'submit' button.
 		panel.add(new Button("Submit", new ClickHandler() {
-			@Override
-			public void onClick(final ClickEvent event) {
+			@Override public void onClick(final ClickEvent event) {
 				form.submit();
 			}
 		}));
 
+		// Create a SimpleProgressBar, add it to the panel. Also set is as the
+		// display for the form.
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
-		// Add an event handler to the form.
 		form.setStatusDisplay(simpleProgressBar);
 
 		initWidget(form);
