@@ -1,3 +1,19 @@
+/*
+ * Copyright 2010 Nick Siderakis.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package com.siderakis.upload4gwt.client;
 
 import java.util.ArrayList;
@@ -15,9 +31,6 @@ import com.siderakis.upload4gwt.shared.UploadStatus;
 public class ProgressSyncer {
 	private static final ProgressSyncer INSTANCE = new ProgressSyncer();
 
-	private ProgressSyncer() {
-	}
-
 	public static final ProgressSyncer getInstance() {
 		return INSTANCE;
 	}
@@ -30,10 +43,15 @@ public class ProgressSyncer {
 			uploadService.getUploadStatus(getInProgressIds(), new AsyncCallback<List<UploadStatus>>() {
 
 				@Override
-				public void onSuccess(List<UploadStatus> result) {
+				public void onFailure(final Throwable caught) {
+
+				}
+
+				@Override
+				public void onSuccess(final List<UploadStatus> result) {
 					Boolean allDone = true;
-					for (UploadStatus us : result) {
-						HasProgress statusDisaply = statusDisplays.get(us.getName());
+					for (final UploadStatus us : result) {
+						final HasProgress statusDisaply = statusDisplays.get(us.getName());
 						statusDisaply.setProgress(us);
 						if (!us.isFinished()) {
 							allDone = false;
@@ -44,19 +62,27 @@ public class ProgressSyncer {
 						stop();
 					}
 				}
-
-				@Override
-				public void onFailure(Throwable caught) {
-
-				}
 			});
 		}
 	};
 
-	private List<String> getInProgressIds() {
-		List<String> result = new ArrayList<String>();
+	private final Map<String, HasProgress> statusDisplays = new HashMap<String, HasProgress>();
 
-		for (String display : statusDisplays.keySet()) {
+	private String baseId = null;
+
+	private Integer nextId = 0;
+
+	private ProgressSyncer() {
+	}
+
+	public void addStatusDisplay(final String id, final HasProgress statusDisplay) {
+		statusDisplays.put(id, statusDisplay);
+	}
+
+	private List<String> getInProgressIds() {
+		final List<String> result = new ArrayList<String>();
+
+		for (final String display : statusDisplays.keySet()) {
 			if (statusDisplays.get(display) == null || statusDisplays.get(display).getProgress() == null) {
 			} else if (!statusDisplays.get(display).getProgress().isFinished()) {
 				result.add(display);
@@ -65,23 +91,6 @@ public class ProgressSyncer {
 		return result;
 	}
 
-	private final Map<String, HasProgress> statusDisplays = new HashMap<String, HasProgress>();
-
-	public void addStatusDisplay(String id, HasProgress statusDisplay) {
-		statusDisplays.put(id, statusDisplay);
-	}
-
-	public void stop() {
-		timer.cancel();
-	}
-
-	public void start() {
-		timer.scheduleRepeating(500);
-	}
-
-	private String baseId = null;
-	private Integer nextId = 0;
-
 	public void getNextId(final AsyncCallback<String> callback) {
 		if (baseId != null) {
 			callback.onSuccess(baseId + nextId++);
@@ -89,23 +98,30 @@ public class ProgressSyncer {
 			uploadService.getUploadIdPrefix(new AsyncCallback<String>() {
 
 				@Override
-				public void onSuccess(String result) {
-					baseId = result;
-					callback.onSuccess(baseId + nextId++);
+				public void onFailure(final Throwable caught) {
 				}
 
 				@Override
-				public void onFailure(Throwable caught) {
+				public void onSuccess(final String result) {
+					baseId = result;
+					callback.onSuccess(baseId + nextId++);
 				}
 			});
 		}
 	}
+	public void start() {
+		timer.scheduleRepeating(500);
+	}
 
-	public void start(String uploadId) {
+	public void start(final String uploadId) {
 		if (statusDisplays.get(uploadId) != null) {
 			statusDisplays.get(uploadId).setProgress(new UploadStatus(uploadId, 0L, 0L));
 		}
 		start();
+	}
+
+	public void stop() {
+		timer.cancel();
 	}
 
 }
