@@ -11,25 +11,50 @@ public class UploadDropTarget {
 	private final IsUploadDropTarget uploadDropImpl;
 	private final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
 	private String key = null;
+	private Element dropTarget;
 
 	public UploadDropTarget() {
 		uploadDropImpl = GWT.create(UploadDropImpl.class);
+	}
+
+	private void addListeners(final Element dropTarget) {
+		addListeners(dropTarget, this);
+	}
+
+	private final native void addListeners(Element dropTarget, UploadDropTarget thsi)/*-{
+		dropTarget.addEventListener("dragover", function(event){
+		event.stopPropagation();
+		event.preventDefault();
+		thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::dragover()();
+		}, true);
+		dropTarget.addEventListener("dragleave", function(event){
+		event.stopPropagation();
+		event.preventDefault();
+		thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::dragleave()();
+		}, true);
+		dropTarget.addEventListener("drop",function(event){
+		event.preventDefault();
+		thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::drop()();
+		} , true);
+	}-*/;
+
+	private void dragleave() {
+		dropTarget.getStyle().clearBackgroundColor();
 
 	}
 
-	// private void upload(final File file) {
-	// uploadDropImpl.upload(file);
-	// }
+	private void dragover() {
+		dropTarget.getStyle().setBackgroundColor("green");
 
-	void start() {
+	}
+
+	private void drop() {
+		GWT.log("drop: " + key);
 		progressSyncer.start(key);
 	}
 
-	private final native void startTimer(Element place)/*-{
-		place.addEventListener("drop", 	this.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::start()(), false);
-	}-*/;
-
-	public void uploader(final Element place, final String targetURL) {
+	public void uploader(final Element dropTarget, final String destinationURL, final HasProgress progressBar) {
+		this.dropTarget = dropTarget;
 		// since files are upload sequentially the same upload id can be used.
 		// TODO there needs to be a way to display multiple progress bars....
 		// HMM
@@ -39,39 +64,16 @@ public class UploadDropTarget {
 			}
 
 			@Override public void onSuccess(final String result) {
+				GWT.log("received new uploadId: " + result);
 				key = result;
-				final String temp = targetURL + (targetURL.contains("?") ? "&" : "?") + "uploadId=" + result;
-				uploadDropImpl.uploader(place, temp);
-				startTimer(place);
+				final String destinationURLWithId = destinationURL + (destinationURL.contains("?") ? "&" : "?")
+				+ "uploadId=" + result;
+				addListeners(dropTarget);
+				uploadDropImpl.uploader(dropTarget, destinationURLWithId);
+				ProgressSyncer.getInstance().addStatusDisplay(result, progressBar);
 			}
+
 		});
-	}
-
-	// private final native void uploaderImpl(Element place, String
-	// targetURL)/*-{
-	// // Function drop file
-	// dropF = function(event){
-	// event.preventDefault();
-	// var dt = event.dataTransfer;
-	// var files = dt.files;
-	// for (var i = 0; i < files.length; i++) {
-	// var file = files[i];
-	// this.@com.siderakis.upload4gwt.client.dnd.UploadDrop::upload(Lcom/siderakis/upload4gwt/client/ui/File;)(file);
-	// }
-	// }
-	//
-	// // The inclusion of the event listeners (DragOver and drop)
-	//
-	// place.addEventListener("dragover", function(event){
-	// event.stopPropagation();
-	// event.preventDefault();
-	// }, true);
-	// place.addEventListener("drop", dropF, false);
-	// }-*/;
-
-	public void uploader(final Element place, final String targetURL, final HasProgress progressBar) {
-		uploader(place, targetURL);
-		ProgressSyncer.getInstance().addStatusDisplay(targetURL, progressBar);
 	}
 
 }

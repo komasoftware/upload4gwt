@@ -60,11 +60,9 @@ class UploadDropChromeImpl implements IsUploadDropTarget {
 		// Function drop file
 		dropF = function(event){
 		event.preventDefault();
-		var dt = event.dataTransfer;
-		var files = dt.files;
+		var files = event.dataTransfer.files;
 		for (var i = 0; i < files.length; i++) {
-		var file = files[i];
-		upload(file);
+		upload(files[i]);
 		}
 		}
 

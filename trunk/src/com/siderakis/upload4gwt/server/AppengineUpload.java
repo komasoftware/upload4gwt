@@ -2,7 +2,6 @@ package com.siderakis.upload4gwt.server;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -19,12 +18,15 @@ import org.apache.commons.io.IOUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import com.siderakis.upload4gwt.server.dao.UploadStatusDAO;
+import com.siderakis.upload4gwt.shared.UploadStatus;
 
 @Singleton public class AppengineUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AppengineUpload.class.getName());
 
 	@Inject private Provider<AppengineListener> progressListenerProvider;
+	@Inject private UploadStatusDAO uploadStatusDAO;
 
 	@Override public void doPost(final HttpServletRequest req, final HttpServletResponse res) throws ServletException,
 	IOException {
@@ -47,12 +49,12 @@ import com.google.inject.Singleton;
 				final FileItemIterator iterator = upload.getItemIterator(req);
 				while (iterator.hasNext()) {
 					final FileItemStream item = iterator.next();
-					final InputStream in = item.openStream();
 
 					if (item.isFormField()) {
 						log.warning("Got a form field: " + item.getFieldName());
 					} else {
 
+						final InputStream in = item.openStream();
 						final String fieldName = item.getFieldName();
 						final String fileName = item.getName();
 						final String contentType = item.getContentType();
@@ -61,7 +63,6 @@ import com.google.inject.Singleton;
 								+ contentType);
 						try {
 							final String output = IOUtils.toString(in);
-
 							log.warning(output);
 						} finally {
 							IOUtils.closeQuietly(in);
@@ -71,9 +72,11 @@ import com.google.inject.Singleton;
 				}
 
 			} catch (final SizeLimitExceededException e) {
-				final PrintWriter out = res.getWriter();
-				out.println("You exceeded the maximu size (" + e.getPermittedSize() + ") of the file ("
-						+ e.getActualSize() + ")");
+				final String message = "You exceeded the maximu size (" + e.getPermittedSize() + ") of the file ("
+				+ e.getActualSize() + ")";
+				final UploadStatus status = new UploadStatus(uploadId, UploadStatus.Errors.SizeLimitExceededException,
+						message);
+				uploadStatusDAO.setUploadStatus(status);
 			}
 		} catch (final Exception ex) {
 			throw new ServletException(ex);

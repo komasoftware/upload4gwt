@@ -10,8 +10,7 @@ import com.google.inject.servlet.RequestScoped;
 import com.siderakis.upload4gwt.server.dao.UploadStatusDAO;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
-@RequestScoped
-public class AppengineListener implements ProgressListener, Serializable {
+@RequestScoped public class AppengineListener implements ProgressListener, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,15 +19,13 @@ public class AppengineListener implements ProgressListener, Serializable {
 
 	private String uploadId;
 
-	public void setUploadId(String uploadId) {
+	@Inject private UploadStatusDAO uploadStatusDAO;
+
+	public void setUploadId(final String uploadId) {
 		this.uploadId = uploadId;
 	}
 
-	@Inject
-	private UploadStatusDAO uploadStatusDAO;
-
-	@Override
-	public void update(final long bytesRead, final long contentLength, final int items) {
+	@Override public void update(final long bytesRead, final long contentLength, final int items) {
 		final UploadStatus status = new UploadStatus(uploadId, bytesRead, contentLength);
 		uploadStatusDAO.setUploadStatus(status);
 		log.warning("putting in session: " + status.toString());
@@ -42,8 +39,7 @@ public class AppengineListener implements ProgressListener, Serializable {
 		if (sleepMilliseconds > 0 && bytesRead < contentLength) {
 			try {
 				Thread.sleep(sleepMilliseconds);
-			} catch (final Exception e) {
-			}
+			} catch (final Exception e) {}
 		}
 
 	}
