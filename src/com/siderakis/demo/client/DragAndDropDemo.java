@@ -30,14 +30,16 @@ public class DragAndDropDemo extends Composite {
 		final FlowPanel panel = new FlowPanel();
 		panel.setStyleName("panel");
 		panel.add(new HTML("Upload4gwt"));
-		final FlowPanel place = new FlowPanel();
-		place.add(new Label("DROP HERE"));
-		panel.add(place);
+
+		final FlowPanel dropPanel = new FlowPanel();
+		dropPanel.addStyleName("dropPanel");
+		dropPanel.add(new Label("DROP HERE"));
+		panel.add(dropPanel);
 
 		initWidget(panel);
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
-		new UploadDropTarget().uploader(place.getElement(), UPLOAD_ACTION_URL, simpleProgressBar);
+		new UploadDropTarget().uploader(dropPanel.getElement(), UPLOAD_ACTION_URL, simpleProgressBar);
 
 	}
 }

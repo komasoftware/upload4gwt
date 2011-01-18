@@ -6,17 +6,19 @@ import com.google.inject.Singleton;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
 /** Uses the low level App Engine Datastore API, and Memcache */
-@Singleton
-public class UploadStatusDAOAppEngineImpl implements UploadStatusDAO {
+@Singleton public class UploadStatusDAOAppEngineImpl implements UploadStatusDAO {
 
-	@Override
-	public String getBaseUploadId() {
+	private final static String CACHE_KEY_PREFIX = "upload-ckp:";
+
+	private final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+
+	@Override public String getBaseUploadId() {
 		return getRandomKey();
 	}
 
 	private String getRandomKey() {
-		int n = 16;
-		char[] key = new char[n];
+		final int n = 16;
+		final char[] key = new char[n];
 		int newChar = 'A';
 		int charType = 0;
 		for (int i = 0; i < n; i++) {
@@ -37,16 +39,11 @@ public class UploadStatusDAOAppEngineImpl implements UploadStatusDAO {
 		return new String(key);
 	}
 
-	private final static String CACHE_KEY_PREFIX = "upload-ckp:";
-	private final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
-
-	@Override
-	public void setUploadStatus(UploadStatus uploadStatus) {
-		memcacheService.put(CACHE_KEY_PREFIX + uploadStatus.getName(), uploadStatus);
+	@Override public UploadStatus getUploadStatus(final String key) {
+		return (UploadStatus) memcacheService.get(CACHE_KEY_PREFIX + key);
 	}
 
-	@Override
-	public UploadStatus getUploadStatus(String key) {
-		return (UploadStatus) memcacheService.get(CACHE_KEY_PREFIX + key);
+	@Override public void setUploadStatus(final UploadStatus uploadStatus) {
+		memcacheService.put(CACHE_KEY_PREFIX + uploadStatus.getName(), uploadStatus);
 	}
 }

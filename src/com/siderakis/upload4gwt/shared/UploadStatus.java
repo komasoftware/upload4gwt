@@ -4,26 +4,35 @@ import java.io.Serializable;
 
 public class UploadStatus implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	public enum Errors {
+		SizeLimitExceededException,
 
+	}
+
+	private static final long serialVersionUID = 1L;
 	private Long bytesRead;
 	private Long contentLength;
 	private String key;
+	private Errors error = null;
 
-	@SuppressWarnings("unused")
-	private UploadStatus() {
+	public String message = null;
+
+	@SuppressWarnings("unused") private UploadStatus() {
 
 	}
 
-	@Override
-	public String toString() {
-		return "UploadStatus [bytesRead=" + bytesRead + ", contentLength=" + contentLength + ", id=" + key
-				+ ", getPercentage()=" + getPercentage() + "]";
-	}
-
-	public UploadStatus(String id, Long part, Long total) {
+	public UploadStatus(final String uploadId, final Errors error, final String message) {
 		super();
-		this.key = id;
+		this.key = uploadId;
+		this.error = error;
+		this.message = message;
+		this.bytesRead = 0L;
+		this.contentLength = 0L;
+	}
+
+	public UploadStatus(final String uploadId, final Long part, final Long total) {
+		super();
+		this.key = uploadId;
 		this.bytesRead = part;
 		this.contentLength = total;
 	}
@@ -32,15 +41,32 @@ public class UploadStatus implements Serializable {
 		return "100Mb/sec";
 	}
 
-	public Integer getPercentage() {
-		return contentLength.equals(0L) ? 0 : Math.round(bytesRead * 100 / contentLength);
+	public Errors getError() {
+		return error;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 
 	public String getName() {
 		return key;
 	}
 
+	public Integer getPercentage() {
+		return contentLength.equals(0L) ? 0 : Math.round(bytesRead * 100 / contentLength);
+	}
+
+	public Boolean isError() {
+		return error != null;
+	}
+
 	public Boolean isFinished() {
-		return getPercentage().equals(100);
+		return isError() || getPercentage().equals(100);
+	}
+
+	@Override public String toString() {
+		return "UploadStatus [bytesRead=" + bytesRead + ", contentLength=" + contentLength + ", id=" + key
+		+ ", getPercentage()=" + getPercentage() + "]";
 	}
 }

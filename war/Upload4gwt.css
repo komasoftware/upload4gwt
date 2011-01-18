@@ -9,7 +9,14 @@ div.gwt-HTML {
 	text-shadow: rgba(64, 64, 64, 0.496094) -6px -2px 6px;
 	-webkit-box-shadow: rgba(0, 0, 128, 0.246094) 0px 0px 0px;
 }
-
+.dropPanel{
+	
+	border:1px solid #00aac4;
+	margin:10px;
+	padding:0px;
+	text-align:center;
+	height:200px;
+}
 .panel {
 	width: 320px;
 	margin: 4em auto;
