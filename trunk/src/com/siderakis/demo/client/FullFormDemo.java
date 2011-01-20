@@ -22,6 +22,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -30,7 +32,9 @@ import com.siderakis.upload4gwt.client.UploadFormPanel;
 import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 
 /**
- * Entry point classes define <code>onModuleLoad()</code>.
+ * This simple demo provides the ability to a upload a single file, along with
+ * other form data. After the upload has completed it allows for the form to be
+ * reset.
  * 
  */
 public class FullFormDemo extends Composite {
@@ -42,7 +46,7 @@ public class FullFormDemo extends Composite {
 		panel.setStyleName("panel");
 		panel.add(new HTML("Upload4gwt"));
 
-		// Create a FormPanel and point it at a service.
+		// Create a UploadFormPanel and point it at a service.
 		final UploadFormPanel form = new UploadFormPanel();
 		form.setAction(UPLOAD_ACTION_URL);
 		form.setWidget(panel);
@@ -71,17 +75,25 @@ public class FullFormDemo extends Composite {
 
 		// Add a 'submit' button.
 		panel.add(new Button("Submit", new ClickHandler() {
-			@Override public void onClick(final ClickEvent event) {
+			@Override
+			public void onClick(final ClickEvent event) {
 				form.submit();
 			}
 		}));
 
-		// Create a SimpleProgressBar, add it to the panel. Also set is as the
-		// display for the form.
+		// Create a SimpleProgressBar, add it to the panel. Also set it as the
+		// status display for the form.
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
 		form.setStatusDisplay(simpleProgressBar);
 
+		form.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+
+			@Override
+			public void onSubmitComplete(SubmitCompleteEvent event) {
+				// TODO reset the form.
+			}
+		});
 		initWidget(form);
 
 	}
