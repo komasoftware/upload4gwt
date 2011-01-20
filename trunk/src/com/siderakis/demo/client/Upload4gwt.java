@@ -26,13 +26,14 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
  */
 public class Upload4gwt implements EntryPoint {
 
-	@Override public void onModuleLoad() {
+	@Override
+	public void onModuleLoad() {
 
 		final TabLayoutPanel layoutPanel = new TabLayoutPanel(30, Unit.PX);
 		layoutPanel.add(new DragAndDropDemo(), "Drag-and-Drop Demo");
-		layoutPanel.add(new FullFormDemo(), "Form-Data Demo");
 		layoutPanel.add(new MultiSelectDemo(), "Multi-Select Demo");
 		layoutPanel.add(new StyledInputDemo(), "Styled-Input Demo");
+		layoutPanel.add(new FullFormDemo(), "Form-Data Demo");
 		RootLayoutPanel.get().add(layoutPanel);
 
 	}
