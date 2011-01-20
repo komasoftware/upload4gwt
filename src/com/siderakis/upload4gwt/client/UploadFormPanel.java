@@ -22,26 +22,32 @@ import com.google.gwt.user.client.ui.FormPanel;
 
 public class UploadFormPanel extends FormPanel {
 	private String uploadId = null;
+	private HasProgress statusDisplay = null;
 	final ProgressSyncer progressSyncer = ProgressSyncer.getInstance();
 
 	private String actionBase;
 
 	public UploadFormPanel() {
+		this(false);
+	}
+
+	public UploadFormPanel(Boolean prefetchId) {
 		super();
 
-		progressSyncer.getNextId(new AsyncCallback<String>() {
+		if (prefetchId) {
+			progressSyncer.getNextId(new AsyncCallback<String>() {
 
-			@Override
-			public void onFailure(final Throwable caught) {
-			}
+				@Override
+				public void onFailure(final Throwable caught) {
+				}
 
-			@Override
-			public void onSuccess(final String result) {
-				uploadId = result;
-				setAction(actionBase);
-			}
-		});
-
+				@Override
+				public void onSuccess(final String result) {
+					uploadId = result;
+					setAction(actionBase);
+				}
+			});
+		}
 		// Because we're going to add a FileUpload widget, we'll need to set the
 		// form to use the POST method, and multipart MIME encoding.
 		setEncoding(FormPanel.ENCODING_MULTIPART);
@@ -72,7 +78,7 @@ public class UploadFormPanel extends FormPanel {
 						}
 					});
 				} else {
-
+					progressSyncer.addStatusDisplay(uploadId, statusDisplay);
 					progressSyncer.start(uploadId);
 				}
 			}
@@ -100,6 +106,7 @@ public class UploadFormPanel extends FormPanel {
 	}
 
 	public void setStatusDisplay(final HasProgress statusDisplay) {
+		this.statusDisplay = statusDisplay;
 		progressSyncer.addStatusDisplay(uploadId, statusDisplay);
 
 	}
