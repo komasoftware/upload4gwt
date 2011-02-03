@@ -1,12 +1,22 @@
 #labels Featured
-Getting Started with Upload4GWT
+=Getting Started with Upload4GWT=
 
-= Introduction =
+== Introduction ==
 
-On the front end the main components are the `UploadFormPanel` and the `SimpleProgressBar`.  The `UploadFormPanel` extends the regular GWT form panel, and adds functionality that support a progress bar.  Any implementation of `HasProgress` can be used.  In this example the provided implementation `SimpleProgressBar` is being used.
+On the front end the main components are the `UploadFormPanel` and the `SimpleProgressBar`.  The `UploadFormPanel` extends the regular GWT form panel, and adds functionality that support a progress bar.  Any implementation of `HasProgress` can be used as a progress bar.  In this example the provided implementation `SimpleProgressBar` is being used.
 
 
 == Using upload4gwt in your project ==
+
+=== Project set-up ===
+# Copy the jar file into the war/lib directory, and add it to the build path.
+
+# Add this line into the projects gwt.xml 
+{{{
+	<inherits name='com.siderakis.upload4gwt.Upload4gwt' />
+}}}
+
+=== Create the upload form ===
 
 {{{
 // Create a FlowPanel which form items can be added.
@@ -36,3 +46,5 @@ panel.add(simpleProgressBar);
 // Set it as the status display for the form.
 form.setStatusDisplay(simpleProgressBar);
 }}}
+
+=== Handle upload submission on the server ===
