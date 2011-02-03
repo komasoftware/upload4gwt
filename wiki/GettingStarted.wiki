@@ -3,7 +3,7 @@ Getting Started with Upload4GWT
 
 = Introduction =
 
-On the front end the main components are the 'UploadFormPanel' and the 'SimpleProgressBar'.  The 'UploadFormPanel' extends the regular GWT form panel, and adds functionality that support a progress bar.  Any implementation of 'HasProgress' can be used.  In this example the provided implementation 'SimpleProgressBar' is being used.
+On the front end the main components are the `UploadFormPanel` and the `SimpleProgressBar`.  The `UploadFormPanel` extends the regular GWT form panel, and adds functionality that support a progress bar.  Any implementation of `HasProgress` can be used.  In this example the provided implementation `SimpleProgressBar` is being used.
 
 
 == Using upload4gwt in your project ==
