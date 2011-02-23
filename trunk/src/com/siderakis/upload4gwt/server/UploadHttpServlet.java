@@ -23,12 +23,12 @@ import com.siderakis.upload4gwt.server.dao.UploadStatusDAO;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
 @Singleton
-public abstract class AppengineUpload extends HttpServlet {
+public abstract class UploadHttpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(AppengineUpload.class.getName());
+	private static final Logger log = Logger.getLogger(UploadHttpServlet.class.getName());
 
 	@Inject
-	private Provider<AppengineListener> progressListenerProvider;
+	private Provider<UploadListener> progressListenerProvider;
 	@Inject
 	private UploadStatusDAO uploadStatusDAO;
 
@@ -53,7 +53,7 @@ public abstract class AppengineUpload extends HttpServlet {
 			res.setContentType("text/plain");
 
 			// Create a progress listener
-			final AppengineListener progressListener = progressListenerProvider.get();
+			final UploadListener progressListener = progressListenerProvider.get();
 			final String uploadId = req.getParameter("uploadId");
 			log.warning("uploadId: " + uploadId);
 

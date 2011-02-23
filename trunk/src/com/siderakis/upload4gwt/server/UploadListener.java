@@ -10,12 +10,12 @@ import com.google.inject.servlet.RequestScoped;
 import com.siderakis.upload4gwt.server.dao.UploadStatusDAO;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
-@RequestScoped public class AppengineListener implements ProgressListener, Serializable {
+@RequestScoped public class UploadListener implements ProgressListener, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private final Integer sleepMilliseconds = 1000;
-	private static final Logger log = Logger.getLogger(AppengineListener.class.getName());
+	private static final Logger log = Logger.getLogger(UploadListener.class.getName());
 
 	private String uploadId;
 
