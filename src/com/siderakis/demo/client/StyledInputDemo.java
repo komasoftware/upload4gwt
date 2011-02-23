@@ -78,7 +78,8 @@ public class StyledInputDemo extends Composite {
 	}
 
 	private void addImageStyledInput() {
-		final FileUpload upload = new StyledFileUpload("Select a file");
+		final StyledFileUpload upload = new StyledFileUpload("Select a file");
+		upload.setShowFileName(false);
 		res.style().ensureInjected();
 		final FlowPanel outer = new FlowPanel();
 		outer.setStyleName(res.style().styledUploader());
