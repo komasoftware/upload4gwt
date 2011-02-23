@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
@@ -21,19 +22,34 @@ import com.google.inject.Singleton;
 import com.siderakis.upload4gwt.server.dao.UploadStatusDAO;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
-@Singleton public class AppengineUpload extends HttpServlet {
+@Singleton
+public abstract class AppengineUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AppengineUpload.class.getName());
 
-	@Inject private Provider<AppengineListener> progressListenerProvider;
-	@Inject private UploadStatusDAO uploadStatusDAO;
+	@Inject
+	private Provider<AppengineListener> progressListenerProvider;
+	@Inject
+	private UploadStatusDAO uploadStatusDAO;
 
-	@Override public void doPost(final HttpServletRequest req, final HttpServletResponse res) throws ServletException,
-	IOException {
+	public abstract void doUpload(final HttpServletRequest req, final HttpServletResponse res, FileItemIterator iterator)
+			throws ServletException, IOException;
+
+	int maxSize = -1;
+
+	public void setMaxSize(int maxSize) {
+		this.maxSize = maxSize;
+	}
+
+	@Override
+	public void doPost(final HttpServletRequest req, final HttpServletResponse res) throws ServletException,
+			IOException {
 		log.warning("Getting a post");
 		try {
 			final ServletFileUpload upload = new ServletFileUpload();
-			upload.setSizeMax(50000);
+			if (maxSize != -1) {
+				upload.setSizeMax(maxSize);
+			}
 			res.setContentType("text/plain");
 
 			// Create a progress listener
@@ -47,39 +63,46 @@ import com.siderakis.upload4gwt.shared.UploadStatus;
 
 			try {
 				final FileItemIterator iterator = upload.getItemIterator(req);
-				while (iterator.hasNext()) {
-					final FileItemStream item = iterator.next();
-
-					if (item.isFormField()) {
-						log.warning("Got a form field: " + item.getFieldName());
-					} else {
-
-						final InputStream in = item.openStream();
-						final String fieldName = item.getFieldName();
-						final String fileName = item.getName();
-						final String contentType = item.getContentType();
-
-						log.warning("Got an uploaded file: " + fieldName + ", name = " + fileName + ", contentType = "
-								+ contentType);
-						try {
-							final String output = IOUtils.toString(in);
-							log.warning(output);
-						} finally {
-							IOUtils.closeQuietly(in);
-						}
-					}
-
-				}
+				doUpload(req, res, iterator);
+				logFiles(req, upload);
 
 			} catch (final SizeLimitExceededException e) {
 				final String message = "You exceeded the maximu size (" + e.getPermittedSize() + ") of the file ("
-				+ e.getActualSize() + ")";
+						+ e.getActualSize() + ")";
 				final UploadStatus status = new UploadStatus(uploadId, UploadStatus.Errors.SizeLimitExceededException,
 						message);
 				uploadStatusDAO.setUploadStatus(status);
 			}
 		} catch (final Exception ex) {
 			throw new ServletException(ex);
+		}
+	}
+
+	private void logFiles(final HttpServletRequest req, final ServletFileUpload upload) throws FileUploadException,
+			IOException {
+		final FileItemIterator logIterator = upload.getItemIterator(req);
+		while (logIterator.hasNext()) {
+			final FileItemStream item = logIterator.next();
+
+			if (item.isFormField()) {
+				log.warning("Got a form field: " + item.getFieldName());
+			} else {
+
+				final InputStream in = item.openStream();
+				final String fieldName = item.getFieldName();
+				final String fileName = item.getName();
+				final String contentType = item.getContentType();
+
+				log.warning("Got an uploaded file: " + fieldName + ", name = " + fileName + ", contentType = "
+						+ contentType);
+				try {
+					final String output = IOUtils.toString(in);
+					log.warning(output);
+				} finally {
+					IOUtils.closeQuietly(in);
+				}
+			}
+
 		}
 	}
 }
