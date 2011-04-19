@@ -1,4 +1,4 @@
-package com.siderakis.upload4gwt.server.guice;
+package com.siderakis.demo.server.guice;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

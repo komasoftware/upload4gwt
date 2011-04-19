@@ -13,16 +13,15 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 public class AppengineBlobUpload extends HttpServlet {
-	private final BlobstoreService blobstoreService = BlobstoreServiceFactory
-	.getBlobstoreService();
+	private final BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public void doPost(final HttpServletRequest req,
-			final HttpServletResponse res) throws ServletException, IOException {
+	@Override public void doPost(final HttpServletRequest req, final HttpServletResponse res) throws ServletException,
+	IOException {
 
-		final Map<String, BlobKey> blobs = blobstoreService
-		.getUploadedBlobs(req);
+		// TODO use Files API
+		// http://code.google.com/appengine/docs/java/blobstore/overview.html#Writing_Files_to_the_Blobstore
+		final Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
 		final BlobKey blobKey = blobs.get("myFile");
 
 		if (blobKey == null) {
