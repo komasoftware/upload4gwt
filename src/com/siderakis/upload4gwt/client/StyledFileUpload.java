@@ -6,16 +6,19 @@ import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.user.client.ui.FileUpload;
 
 public class StyledFileUpload extends FileUpload {
-
+	// TODO refactor internals
 	public StyledFileUpload() {
 		super();
-
-		addAttachHandler(new Handler() {
-			@Override
-			public void onAttachOrDetach(AttachEvent event) {
-				styleInput(getFileUploadElement());
-			}
-		});
+		if (isAttached()) {
+			styleInput(getFileUploadElement());
+		} else {
+			addAttachHandler(new Handler() {
+				@Override
+				public void onAttachOrDetach(AttachEvent event) {
+					styleInput(getFileUploadElement());
+				}
+			});
+		}
 
 	}
 
@@ -23,15 +26,17 @@ public class StyledFileUpload extends FileUpload {
 		return getElement();
 	}
 
-	public StyledFileUpload(final String string) {
-
-		addAttachHandler(new Handler() {
-			@Override
-			public void onAttachOrDetach(AttachEvent event) {
-				styleInput(getFileUploadElement(), string);
-			}
-		});
-
+	public StyledFileUpload(final String displayText) {
+		if (isAttached()) {
+			styleInput(getFileUploadElement(), displayText);
+		} else {
+			addAttachHandler(new Handler() {
+				@Override
+				public void onAttachOrDetach(AttachEvent event) {
+					styleInput(getFileUploadElement(), displayText);
+				}
+			});
+		}
 	}
 
 	private static native void styleInput(Element input) /*-{
@@ -63,4 +68,18 @@ public class StyledFileUpload extends FileUpload {
 		}
 	}-*/;
 
+	public void setShowFileName(boolean showFileName) {
+		setShowFileName(getFileUploadElement(), showFileName);
+	}
+
+	private static native void setShowFileName(Element input, boolean showFileName) /*-{
+		if (showFileName) {
+			input.onchange = input.onmouseout = function() {
+				this.relatedElement.value = this.value;
+			}
+		} else {
+			input.onchange = input.onmouseout = function() {
+			}
+		}
+	}-*/;
 }
