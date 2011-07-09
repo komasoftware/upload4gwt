@@ -14,7 +14,7 @@ public class SimpleProgressBar extends Composite implements HasProgress {
 		@Template("<div><div style=\"font-size:medium;height:1.2em;width:100%;cursor:default;border:thin #7ba5d5 solid;\">"
 				+ "<div style=\"height:1.2em;width:{0}%; background:#8cb6e6; background-image: url('progress_background.png');\">"
 				+ "</div><div style=\"height:1.2em; margin:-1.2em;font-weight:bold;color:#4e7fba;\">"
-				+ "<center>{0}</center></div></div></div>")
+				+ "<center>{0}%</center></div></div></div>")
 				SafeHtml status(int percentage);
 	}
 
