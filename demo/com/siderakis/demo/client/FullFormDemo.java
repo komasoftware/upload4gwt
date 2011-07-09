@@ -18,6 +18,7 @@ package com.siderakis.demo.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
@@ -90,6 +91,8 @@ public class FullFormDemo extends DemoComposite {
 			}
 		});
 		outer.add(form);
+		outer.add(new Anchor("Source Code",
+		"http://code.google.com/p/upload4gwt/source/browse/trunk/demo/com/siderakis/demo/client/FullFormDemo.java"));
 
 	}
 }
