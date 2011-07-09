@@ -1,4 +1,4 @@
-package com.siderakis.upload4gwt.client.ui;
+package com.siderakis.demo.client;
 
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;

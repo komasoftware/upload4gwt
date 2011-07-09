@@ -27,7 +27,6 @@ import com.siderakis.demo.client.Upload4gwt.DemoComposite;
 import com.siderakis.upload4gwt.client.StyledFileUpload;
 import com.siderakis.upload4gwt.client.UploadFormPanel;
 import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
-import com.siderakis.upload4gwt.client.ui.UploadResources;
 
 public class StyledInputDemo extends DemoComposite {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
