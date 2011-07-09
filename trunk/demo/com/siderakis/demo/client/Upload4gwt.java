@@ -17,6 +17,9 @@ package com.siderakis.demo.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 
@@ -25,6 +28,22 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
  * 
  */
 public class Upload4gwt implements EntryPoint {
+
+	public static class DemoComposite extends Composite {
+		// Create a panel to hold all of the form widgets.
+		final FlowPanel panel = new FlowPanel();
+		final FlowPanel outer = new FlowPanel();
+
+		public DemoComposite() {
+
+			panel.setStyleName("panel");
+			panel.add(new HTML("Upload4gwt"));
+
+			outer.add(panel);
+			initWidget(outer);
+		}
+
+	}
 
 	@Override
 	public void onModuleLoad() {

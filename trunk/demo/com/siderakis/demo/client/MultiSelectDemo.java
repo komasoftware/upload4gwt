@@ -21,24 +21,19 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.siderakis.demo.client.Upload4gwt.DemoComposite;
 import com.siderakis.upload4gwt.client.UploadFormPanel;
 import com.siderakis.upload4gwt.client.ui.File;
 import com.siderakis.upload4gwt.client.ui.FileInput;
 import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 
-public class MultiSelectDemo extends Composite {
+public class MultiSelectDemo extends DemoComposite {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
 
-	final FlowPanel panel = new FlowPanel();
 
 	public MultiSelectDemo() {
-		panel.setStyleName("panel");
-		panel.add(new HTML("Upload4gwt"));
 		final UploadFormPanel form = new UploadFormPanel();
 		form.setAction(UPLOAD_ACTION_URL);
 
@@ -54,7 +49,7 @@ public class MultiSelectDemo extends Composite {
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
 		form.setStatusDisplay(simpleProgressBar);
-		initWidget(form);
+		outer.add(form);
 
 	}
 

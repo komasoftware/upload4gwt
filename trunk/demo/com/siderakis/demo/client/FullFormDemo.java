@@ -19,15 +19,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.siderakis.demo.client.Upload4gwt.DemoComposite;
 import com.siderakis.upload4gwt.client.UploadFormPanel;
 import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 
@@ -37,14 +35,10 @@ import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
  * reset.
  * 
  */
-public class FullFormDemo extends Composite {
+public class FullFormDemo extends DemoComposite {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
 
 	public FullFormDemo() {
-		// Create a panel to hold all of the form widgets.
-		final FlowPanel panel = new FlowPanel();
-		panel.setStyleName("panel");
-		panel.add(new HTML("Upload4gwt"));
 
 		// Create a UploadFormPanel and point it at a service.
 		final UploadFormPanel form = new UploadFormPanel();
@@ -85,16 +79,17 @@ public class FullFormDemo extends Composite {
 		// status display for the form.
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
+
 		form.setStatusDisplay(simpleProgressBar);
 
 		form.addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
 			@Override
-			public void onSubmitComplete(SubmitCompleteEvent event) {
+			public void onSubmitComplete(final SubmitCompleteEvent event) {
 				// TODO reset the form.
 			}
 		});
-		initWidget(form);
+		outer.add(form);
 
 	}
 }

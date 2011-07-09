@@ -19,27 +19,22 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.siderakis.demo.client.Upload4gwt.DemoComposite;
 import com.siderakis.upload4gwt.client.StyledFileUpload;
 import com.siderakis.upload4gwt.client.UploadFormPanel;
 import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 import com.siderakis.upload4gwt.client.ui.UploadResources;
 
-public class StyledInputDemo extends Composite {
+public class StyledInputDemo extends DemoComposite {
 	private static final String UPLOAD_ACTION_URL = GWT.getModuleBaseURL() + "upload";
 
 	private static final UploadResources res = GWT.create(UploadResources.class);
 
-	// Create a panel to hold all of the form widgets.
-	final FlowPanel panel = new FlowPanel();
 
 	public StyledInputDemo() {
-		panel.setStyleName("panel");
-		panel.add(new HTML("Upload4gwt"));
 		// Create a FormPanel and point it at a service.
 		final UploadFormPanel form = new UploadFormPanel();
 		form.setAction(UPLOAD_ACTION_URL);
@@ -59,7 +54,7 @@ public class StyledInputDemo extends Composite {
 		panel.add(simpleProgressBar);
 		form.setStatusDisplay(simpleProgressBar);
 
-		initWidget(form);
+		outer.add(form);
 	}
 
 	private void addCSSStyledInput() {
