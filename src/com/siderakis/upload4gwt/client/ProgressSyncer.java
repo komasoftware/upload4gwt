@@ -28,6 +28,10 @@ import com.siderakis.upload4gwt.client.rpc.UploadService;
 import com.siderakis.upload4gwt.client.rpc.UploadServiceAsync;
 import com.siderakis.upload4gwt.shared.UploadStatus;
 
+/**
+ * Polls the server for updates for all unfinished uploads.
+ * 
+ * */
 public class ProgressSyncer {
 	private static final ProgressSyncer INSTANCE = new ProgressSyncer();
 
@@ -44,7 +48,6 @@ public class ProgressSyncer {
 
 				@Override
 				public void onFailure(final Throwable caught) {
-
 				}
 
 				@Override
@@ -60,6 +63,11 @@ public class ProgressSyncer {
 
 					if (allDone) {
 						stop();
+					} else {
+						if (isRunning) {
+							schedule(500);
+						}
+
 					}
 				}
 			});
@@ -72,6 +80,8 @@ public class ProgressSyncer {
 
 	private Integer nextId = 0;
 
+	private Boolean isRunning = false;
+
 	private ProgressSyncer() {
 	}
 
@@ -83,8 +93,8 @@ public class ProgressSyncer {
 		final List<String> result = new ArrayList<String>();
 
 		for (final String display : statusDisplays.keySet()) {
-			if (statusDisplays.get(display) == null || statusDisplays.get(display).getProgress() == null) {
-			} else if (!statusDisplays.get(display).getProgress().isFinished()) {
+			if (statusDisplays.get(display) == null || statusDisplays.get(display).getProgress() == null) {} else if (!statusDisplays
+					.get(display).getProgress().isFinished()) {
 				result.add(display);
 			}
 		}
@@ -109,8 +119,10 @@ public class ProgressSyncer {
 			});
 		}
 	}
+
 	public void start() {
-		timer.scheduleRepeating(500);
+		isRunning = true;
+		timer.schedule(500);
 	}
 
 	public void start(final String uploadId) {
@@ -121,6 +133,7 @@ public class ProgressSyncer {
 	}
 
 	public void stop() {
+		isRunning = false;
 		timer.cancel();
 	}
 
