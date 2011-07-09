@@ -20,6 +20,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FormPanel;
 
+/**
+ * 
+ * Adds functionality to support a StatusDisplay (progress bar) to the GWT
+ * FormPanel. Uses an uploadId to support multiple uploads.
+ * 
+ * */
 public class UploadFormPanel extends FormPanel {
 	private String uploadId = null;
 	private HasProgress statusDisplay = null;
@@ -31,7 +37,7 @@ public class UploadFormPanel extends FormPanel {
 		this(false);
 	}
 
-	public UploadFormPanel(Boolean prefetchId) {
+	public UploadFormPanel(final Boolean prefetchId) {
 		super();
 
 		if (prefetchId) {

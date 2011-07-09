@@ -13,10 +13,19 @@
 			return window.FileReader==null?'no':'yes';
 	]]>
     </property-provider>
+    
     <replace-with
-     class="com.siderakis.upload4gwt.client.dnd.UploadDropChromeImpl">
+     class="com.siderakis.upload4gwt.client.dnd.impl.UploadDropImpl">
         <when-type-is
-         class="com.siderakis.upload4gwt.client.dnd.UploadDropImpl"/>
+         class="com.siderakis.upload4gwt.client.dnd.IsUploadDropTarget"/>
+        <when-property-is name="filereaderapi.support" value="yes"/>
+    </replace-with>
+    
+    
+    <replace-with
+     class="com.siderakis.upload4gwt.client.dnd.impl.UploadDropChromeImpl">
+        <when-type-is
+         class="com.siderakis.upload4gwt.client.dnd.IsUploadDropTarget"/>
         <!--Firefox 3.6, Chrome 6, WebKit-->
         <when-property-is name="filereaderapi.support" value="yes"/>
         <any>
@@ -25,9 +34,9 @@
         </any>
     </replace-with>
     <replace-with
-     class="com.siderakis.upload4gwt.client.dnd.UploadDropSafaraiImpl">
+     class="com.siderakis.upload4gwt.client.dnd.impl.UploadDropSafaraiImpl">
         <when-type-is
-         class="com.siderakis.upload4gwt.client.dnd.UploadDropImpl"/>
+         class="com.siderakis.upload4gwt.client.dnd.IsUploadDropTarget"/>
         <!--Safarai-->
         <when-property-is name="filereaderapi.support" value="no"/>
         <any>

@@ -5,8 +5,9 @@ import java.io.Serializable;
 public class UploadStatus implements Serializable {
 
 	public enum Errors {
+		// XXX would it be better to throw GWT serializable exceptions from the
+		// RPC method?
 		SizeLimitExceededException,
-
 	}
 
 	private static final long serialVersionUID = 1L;
