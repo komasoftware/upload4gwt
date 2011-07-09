@@ -29,8 +29,7 @@
         <!--Firefox 3.6, Chrome 6, WebKit-->
         <when-property-is name="filereaderapi.support" value="yes"/>
         <any>
-            <when-property-is name="user.agent" value="gecko1_8"/>
-            <when-property-is name="user.agent" value="gecko"/>
+            <when-property-is name="user.agent" value="safari"/>
         </any>
     </replace-with>
     <replace-with
