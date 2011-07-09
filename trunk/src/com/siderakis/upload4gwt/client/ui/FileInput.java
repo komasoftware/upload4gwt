@@ -13,11 +13,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class FileInput extends Widget implements HasName, HasChangeHandlers {
 
+	/** Single file input implementation */
 	private static class FileInputImpl {
+		// returns the single File from the inputElement
 		public native JsArray<File> getFiles(InputElement inputElement) /*-{
-			return inputElement.value && inputElement.value!=""?
-			[{fileName: inputElement.value, fileSize: -1}]:
-			[];
+			return inputElement.value && inputElement.value != "" ? [ {
+				fileName : inputElement.value,
+				fileSize : -1
+			} ] : [];
 		}-*/;
 
 		public boolean isAllowMultipleFiles(final InputElement inputElement) {
@@ -32,6 +35,7 @@ public class FileInput extends Widget implements HasName, HasChangeHandlers {
 		}
 	}
 
+	/** Multiple file input HTML5 implementation */
 	@SuppressWarnings("unused")
 	private static class FileInputImplHtml5 extends FileInputImpl {
 		@Override

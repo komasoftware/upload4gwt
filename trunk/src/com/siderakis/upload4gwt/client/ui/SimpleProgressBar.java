@@ -15,28 +15,29 @@ public class SimpleProgressBar extends Composite implements HasProgress {
 				+ "<div style=\"height:1.2em;width:{0}%; background:#8cb6e6; background-image: url('progress_background.png');\">"
 				+ "</div><div style=\"height:1.2em; margin:-1.2em;font-weight:bold;color:#4e7fba;\">"
 				+ "<center>{0}</center></div></div></div>")
-		SafeHtml status(int percentage);
+				SafeHtml status(int percentage);
 	}
 
-	StatusCellSafeHTMLTemplate statusCellSafeHTMLTemplate = (StatusCellSafeHTMLTemplate) GWT
-			.create(StatusCellSafeHTMLTemplate.class);
-	HTML widget = new HTML();
+	final private StatusCellSafeHTMLTemplate statusCellSafeHTMLTemplate = (StatusCellSafeHTMLTemplate) GWT
+	.create(StatusCellSafeHTMLTemplate.class);
+
+	final private HTML widget = new HTML();
+
+	private UploadStatus uploadStatus;
 
 	public SimpleProgressBar() {
 		initWidget(widget);
 	}
 
-	private UploadStatus uploadStatus;
-
-	@Override
-	public void setProgress(UploadStatus uploadStatus) {
-		this.uploadStatus = uploadStatus;
-		widget.setHTML(statusCellSafeHTMLTemplate.status(uploadStatus.getPercentage()));
-	}
-
 	@Override
 	public UploadStatus getProgress() {
 		return uploadStatus;
+	}
+
+	@Override
+	public void setProgress(final UploadStatus uploadStatus) {
+		this.uploadStatus = uploadStatus;
+		widget.setHTML(statusCellSafeHTMLTemplate.status(uploadStatus.getPercentage()));
 	}
 
 }

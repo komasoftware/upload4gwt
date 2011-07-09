@@ -1,11 +1,10 @@
 package com.siderakis.upload4gwt.client.ui;
 
+import com.google.gwt.core.client.JavaScriptObject;
+
 /**
  * 
  */
-
-import com.google.gwt.core.client.JavaScriptObject;
-
 public class File extends JavaScriptObject {
 
 	protected File() {
