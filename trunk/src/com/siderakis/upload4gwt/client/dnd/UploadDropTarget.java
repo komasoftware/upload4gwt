@@ -14,7 +14,7 @@ public class UploadDropTarget {
 	private Element dropTarget;
 
 	public UploadDropTarget() {
-		uploadDropImpl = GWT.create(UploadDropImpl.class);
+		uploadDropImpl = GWT.create(IsUploadDropTarget.class);
 	}
 
 	private void addListeners(final Element dropTarget) {
@@ -22,20 +22,29 @@ public class UploadDropTarget {
 	}
 
 	private final native void addListeners(Element dropTarget, UploadDropTarget thsi)/*-{
-		dropTarget.addEventListener("dragover", function(event){
-		event.stopPropagation();
-		event.preventDefault();
-		thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::dragover()();
-		}, true);
-		dropTarget.addEventListener("dragleave", function(event){
-		event.stopPropagation();
-		event.preventDefault();
-		thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::dragleave()();
-		}, true);
-		dropTarget.addEventListener("drop",function(event){
-		event.preventDefault();
-		thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::drop()();
-		} , true);
+		dropTarget
+				.addEventListener(
+						"dragover",
+						function(event) {
+							event.stopPropagation();
+							event.preventDefault();
+							thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::dragover()();
+						}, true);
+		dropTarget
+				.addEventListener(
+						"dragleave",
+						function(event) {
+							event.stopPropagation();
+							event.preventDefault();
+							thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::dragleave()();
+						}, true);
+		dropTarget
+				.addEventListener(
+						"drop",
+						function(event) {
+							event.preventDefault();
+							thsi.@com.siderakis.upload4gwt.client.dnd.UploadDropTarget::drop()();
+						}, true);
 	}-*/;
 
 	private void dragleave() {

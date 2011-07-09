@@ -1,6 +1,7 @@
-package com.siderakis.upload4gwt.client.dnd;
+package com.siderakis.upload4gwt.client.dnd.impl;
 
 import com.google.gwt.user.client.Element;
+import com.siderakis.upload4gwt.client.dnd.IsUploadDropTarget;
 
 //based on http://code.google.com/p/html5uploader/
 class UploadDropSafaraiImpl implements IsUploadDropTarget {
