@@ -1,9 +1,9 @@
 package com.siderakis.upload4gwt.client.dnd.impl;
 
 import com.google.gwt.user.client.Element;
-import com.siderakis.upload4gwt.client.dnd.IsUploadDropTarget;
+import com.siderakis.upload4gwt.client.dnd.UploadDropTarget;
 
-class UploadDropImpl implements IsUploadDropTarget {
+class UploadDropImpl implements UploadDropTarget {
 
 	@Override public void uploader(final Element place, final String targetURL) {
 		uploaderImpl(place, targetURL);
