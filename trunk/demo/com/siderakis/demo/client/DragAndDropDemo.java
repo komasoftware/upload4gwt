@@ -19,7 +19,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.siderakis.demo.client.Upload4gwt.DemoComposite;
-import com.siderakis.upload4gwt.client.dnd.UploadDropTarget;
+import com.siderakis.upload4gwt.client.dnd.AbstractUploadDropTarget;
+import com.siderakis.upload4gwt.client.dnd.GreenUploadDropTarget;
 import com.siderakis.upload4gwt.client.ui.SimpleProgressBar;
 
 public class DragAndDropDemo extends DemoComposite {
@@ -34,7 +35,10 @@ public class DragAndDropDemo extends DemoComposite {
 
 		final SimpleProgressBar simpleProgressBar = new SimpleProgressBar();
 		panel.add(simpleProgressBar);
-		new UploadDropTarget().uploader(dropPanel.getElement(), UPLOAD_ACTION_URL, simpleProgressBar);
+
+		final AbstractUploadDropTarget uploadDropTarget = new GreenUploadDropTarget(UPLOAD_ACTION_URL);
+
+		uploadDropTarget.register(dropPanel, simpleProgressBar);
 
 		addSourceCodeLink("DragAndDropDemo");
 
