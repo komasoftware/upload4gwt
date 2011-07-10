@@ -16,7 +16,6 @@
 package com.siderakis.demo.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.siderakis.demo.client.Upload4gwt.DemoComposite;
@@ -37,8 +36,8 @@ public class DragAndDropDemo extends DemoComposite {
 		panel.add(simpleProgressBar);
 		new UploadDropTarget().uploader(dropPanel.getElement(), UPLOAD_ACTION_URL, simpleProgressBar);
 
-		outer.add(new Anchor("Source Code",
-		"http://code.google.com/p/upload4gwt/source/browse/trunk/demo/com/siderakis/demo/client/DragAndDropDemo.java"));
+		addSourceCodeLink("DragAndDropDemo");
 
 	}
+
 }
