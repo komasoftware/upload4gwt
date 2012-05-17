@@ -20,3 +20,10 @@
   * http://www.plupload.com/
   * http://code.google.com/p/gwtupload
   * http://code.google.com/p/swfupload
+
+==HXR2==
+  * http://caniuse.com/xhr2
+  * http://www.sitepoint.com/html5-ajax-file-upload/
+  * http://stackoverflow.com/questions/7114087/html5-file-upload-to-java-servlet
+  * http://code.google.com/p/gwt-html5-wrappers/source/browse/trunk/src/com/pixeljet/html5/client/XHR2.java?r=2
+  * http://css.dzone.com/news/how-html5-use-formdata-object
