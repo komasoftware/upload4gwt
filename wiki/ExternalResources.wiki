@@ -27,3 +27,4 @@
   * http://stackoverflow.com/questions/7114087/html5-file-upload-to-java-servlet
   * http://code.google.com/p/gwt-html5-wrappers/source/browse/trunk/src/com/pixeljet/html5/client/XHR2.java?r=2
   * http://css.dzone.com/news/how-html5-use-formdata-object
+  * http://stackoverflow.com/questions/9395911/sending-a-file-as-multipart-through-xmlhttprequest
