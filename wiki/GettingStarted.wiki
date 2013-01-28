@@ -10,6 +10,8 @@ On the front end the main components are the `UploadFormPanel` and the `SimplePr
 
 === Project set-up ===
 # Copy the jar file into the war/lib directory, and add it to the build path.
+(There is no jar because you will most likely have to edit the code to get it working in your project)
+For a step-by-step setup guide to running the sample check out http://code.google.com/p/upload4gwt/wiki/RunningSample
 
 # Add this line into the projects gwt.xml 
 {{{
